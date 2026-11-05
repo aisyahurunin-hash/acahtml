@@ -1,0 +1,816 @@
+<title>Belajar Ngoding Pita</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;700;800&family=Yesteryear&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu bingkai lavender seperti template foto: header belang + lengkung putih berpita, tab pill, panel putih di atas latar argyle. */
+:root{
+  --bg:#b9a9ec; --arg:#a597e2; --dots:#cdc0f6;
+  --frame:#f4f0ff; --paper:#ffffff; --panel:#d5cff6; --stA:#c9bdf5; --stB:#ddd3fb;
+  --ink:#3b3585; --ink2:#645db0; --line:#6d65c8;
+  --pink:#e07fb5; --pink2:#bf3f89; --pinkbg:#fbd3e8; --pinkbg2:#fdeaf4;
+  --lav:#e3dbfc; --lav2:#c9bdf5; --blue:#d3dcfb; --blue2:#4559bd;
+  --ok:#23724f; --okbg:#d6efe2; --bad:#b3314f; --badbg:#fde0e8; --warn:#9a4e0d; --warnbg:#fff0d6;
+  --codebg:#f8f6ff; --code:#2b2760; --codebar:#e9e3fd;
+  --tk-kw:#a8308f; --tk-str:#1d7552; --tk-com:#8480b2; --tk-num:#a94d17; --tk-tag:#3f55c0; --tk-prop:#7a3bb3;
+  --f-disp:"Yesteryear","Brush Script MT",cursive; --f-body:"Nunito","Segoe UI",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1c1838; --arg:#26214b; --dots:#2f2a5a;
+  --frame:#2a2552; --paper:#342e66; --panel:#221e46; --stA:#3b3475; --stB:#463e86;
+  --ink:#efeaff; --ink2:#c7beee; --line:#b9aef7;
+  --pink:#ff9ccf; --pink2:#ffa6d6; --pinkbg:#5a3465; --pinkbg2:#46305f;
+  --lav:#3e3777; --lav2:#554c9c; --blue:#33407f; --blue2:#a9bbff;
+  --ok:#9ae6c0; --okbg:#2a4d47; --bad:#ffa3b8; --badbg:#5a2f46; --warn:#ffcb8a; --warnbg:#4f3c33;
+  --codebg:#242049; --code:#ece8ff; --codebar:#3a3379;
+  --tk-kw:#ff9bdc; --tk-str:#8ff0bf; --tk-com:#9a96c9; --tk-num:#ffb77d; --tk-tag:#9fb3ff; --tk-prop:#d3a6ff;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1c1838; --arg:#26214b; --dots:#2f2a5a;
+  --frame:#2a2552; --paper:#342e66; --panel:#221e46; --stA:#3b3475; --stB:#463e86;
+  --ink:#efeaff; --ink2:#c7beee; --line:#b9aef7;
+  --pink:#ff9ccf; --pink2:#ffa6d6; --pinkbg:#5a3465; --pinkbg2:#46305f;
+  --lav:#3e3777; --lav2:#554c9c; --blue:#33407f; --blue2:#a9bbff;
+  --ok:#9ae6c0; --okbg:#2a4d47; --bad:#ffa3b8; --badbg:#5a2f46; --warn:#ffcb8a; --warnbg:#4f3c33;
+  --codebg:#242049; --code:#ece8ff; --codebar:#3a3379;
+  --tk-kw:#ff9bdc; --tk-str:#8ff0bf; --tk-com:#9a96c9; --tk-num:#ffb77d; --tk-tag:#9fb3ff; --tk-prop:#d3a6ff;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--f-body);font-size:16px;line-height:1.7;color:var(--ink);
+  background-color:var(--bg);
+  background-image:repeating-conic-gradient(from 45deg,var(--arg) 0 25%,transparent 0 50%),radial-gradient(var(--dots) 1.6px,transparent 2px);
+  background-size:150px 150px,14px 14px;
+  padding-block:18px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--pink2)}
+:focus-visible{outline:3px solid var(--blue2);outline-offset:2px;border-radius:8px}
+#wrap{max-width:1020px;margin:0 auto;background:var(--frame);border:4px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:0 8px 0 color-mix(in srgb,var(--line) 35%,transparent)}
+/* header */
+.hd{position:relative;background:repeating-linear-gradient(90deg,var(--stA) 0 26px,var(--stB) 26px 52px);padding:46px 16px 0}
+.hd::before{content:"";position:absolute;left:0;right:0;top:0;height:16px;background:radial-gradient(circle at 12px 0,var(--paper) 0 10px,transparent 11px) 0 0/24px 16px repeat-x}
+.arch{position:relative;max-width:680px;margin:0 auto;background:var(--paper);border:3px solid var(--line);border-bottom:0;border-radius:340px 340px 0 0/150px 150px 0 0;padding:56px 28px 14px;text-align:center}
+.arch::after{content:"";position:absolute;inset:8px 8px 0;border:2px dashed color-mix(in srgb,var(--pink) 70%,transparent);border-bottom:0;border-radius:330px 330px 0 0/142px 142px 0 0;pointer-events:none}
+.bow{position:absolute;left:50%;top:-22px;width:120px;transform:translateX(-50%);z-index:2}
+.doily{position:absolute;top:26px;width:84px;height:84px}
+.doily.l{left:2%}.doily.r{right:2%}
+h1.logo{font-family:var(--f-disp);font-weight:400;font-size:clamp(2.1rem,6.4vw,3.5rem);line-height:1.15;margin:0;color:var(--pink2);text-shadow:2px 2px 0 var(--lav2);text-wrap:balance}
+.tagline{margin:2px 0 0;font-size:.95rem;color:var(--ink2);font-weight:700}
+.hd-tools{position:absolute;right:12px;top:22px;display:flex;gap:6px;z-index:3}
+.ibtn{width:38px;height:38px;border-radius:50%;border:3px solid var(--line);background:var(--paper);display:grid;place-items:center;color:var(--ink)}
+.ibtn svg{width:20px;height:20px}
+/* tabs */
+.tabs{background:var(--paper);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:6px 16px 16px}
+.tab{padding:6px 18px 8px;border:3px dashed var(--pink);border-radius:20px;background:repeating-linear-gradient(90deg,var(--pinkbg) 0 9px,var(--paper) 9px 18px);font-family:var(--f-disp);font-size:1.3rem;line-height:1.3;color:var(--pink2);box-shadow:0 4px 0 color-mix(in srgb,var(--pink) 45%,transparent)}
+.tab:nth-child(3n+2){border-color:var(--lav2);background:repeating-linear-gradient(90deg,var(--lav) 0 9px,var(--paper) 9px 18px);color:var(--ink);box-shadow:0 4px 0 color-mix(in srgb,var(--lav2) 70%,transparent)}
+.tab:nth-child(3n){border-color:var(--blue2);background:repeating-linear-gradient(90deg,var(--blue) 0 9px,var(--paper) 9px 18px);color:var(--blue2);box-shadow:0 4px 0 color-mix(in srgb,var(--blue2) 35%,transparent)}
+.tab[aria-current="page"]{border-style:solid;transform:translateY(3px);box-shadow:none;background:var(--pink);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.tab:nth-child(3n+2)[aria-current="page"]{background:var(--line)}
+.tab:nth-child(3n)[aria-current="page"]{background:var(--blue2)}
+.argyle{height:18px;background:repeating-conic-gradient(from 45deg,var(--lav2) 0 25%,var(--paper) 0 50%) 0 0/18px 18px;border-block:2px solid var(--lav2)}
+.stats{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:center;background:var(--lav);padding:8px 16px;font-size:.88rem;font-weight:800;color:var(--ink)}
+.xpbar{flex:1 1 140px;max-width:260px;height:14px;border-radius:999px;border:2.5px solid var(--line);background:var(--paper);overflow:hidden}
+.xpbar i{display:block;height:100%;background:repeating-linear-gradient(135deg,var(--pink) 0 8px,color-mix(in srgb,var(--pink) 70%,#fff) 8px 16px);transition:width .5s}
+/* main */
+.main{background:var(--panel);padding:18px}
+.panel{background:var(--paper);border:3px solid var(--line);border-radius:24px;padding:22px 22px 26px}
+.plaid{background-color:var(--pinkbg);background-image:repeating-linear-gradient(0deg,color-mix(in srgb,var(--pink) 30%,transparent) 0 9px,transparent 9px 18px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--pink) 30%,transparent) 0 9px,transparent 9px 18px);border-radius:18px;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
+.btnc{flex:none;width:44px;height:44px}
+.ptitle{margin:0;min-width:0;background:repeating-linear-gradient(135deg,var(--lav) 0 14px,var(--paper) 14px 28px);border:3px solid var(--line);border-radius:999px;padding:4px 28px 7px;font-family:var(--f-disp);font-weight:400;font-size:clamp(1.3rem,4vw,1.9rem);line-height:1.3;color:var(--ink);text-align:center;text-wrap:balance}
+.rib{display:inline-block;margin:6px 0 10px;padding:5px 30px 7px;background:var(--lav);color:var(--ink);font-family:var(--f-disp);font-weight:400;font-size:1.45rem;line-height:1.3;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 50%,100% 100%,0 100%,14px 50%);box-shadow:inset 0 3px 0 var(--line),inset 0 -3px 0 var(--line)}
+h3.sub{font-size:1.12rem;font-weight:800;color:var(--ink);margin:22px 0 4px}
+h3.sub::before{content:"\2726";color:var(--pink);margin-right:8px}
+p{margin:0 0 12px;max-width:72ch}
+.lead{font-size:1.06rem}
+code.i{font-family:var(--f-mono);font-size:.86em;background:var(--lav);color:var(--ink);padding:1px 6px;border-radius:7px;white-space:pre-wrap;overflow-wrap:anywhere}
+ul.l,ol.l{margin:0 0 14px;padding-left:22px;max-width:72ch}
+ul.l li,ol.l li{margin-bottom:6px}
+.lace{height:14px;margin:18px 0;background:radial-gradient(circle at 10px 6px,var(--paper) 0 7px,var(--lav2) 7px 9px,transparent 9.5px) 0 0/20px 14px repeat-x}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{display:flex;gap:7px;align-items:center;padding:5px 13px;border:2.5px solid var(--line);border-radius:999px;background:var(--paper);font-weight:800;font-size:.88rem;color:var(--ink)}
+.chip[aria-current="true"]{background:var(--pink);border-color:var(--pink2);color:#fff}
+.chip .ck{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center;font-size:.7rem;flex:none}
+.chip.done .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border:3px solid var(--line);border-radius:999px;background:var(--lav);color:var(--ink);font-weight:800;box-shadow:0 3px 0 color-mix(in srgb,var(--line) 55%,transparent)}
+.btn:active{transform:translateY(2px);box-shadow:none}
+.btn.p{background:var(--pink);border-color:var(--pink2);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.2)}
+.btn.s{padding:4px 13px;font-size:.85rem}
+.btn.g{background:var(--paper)}
+.btn[disabled]{opacity:.5;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tag{display:inline-block;padding:1px 10px;border-radius:999px;background:var(--lav);border:2px solid var(--lav2);font-size:.74rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+/* mascot */
+.mascot{display:flex;gap:12px;align-items:flex-end;margin:0 0 18px}
+.mascot svg{width:84px;flex:none}
+.bub{position:relative;background:var(--pinkbg2);border:3px solid var(--pink);border-radius:20px;padding:10px 14px;font-weight:700;font-size:.95rem;min-width:0}
+.bub::before{content:"";position:absolute;left:-12px;bottom:18px;width:18px;height:18px;background:var(--pinkbg2);border-left:3px solid var(--pink);border-bottom:3px solid var(--pink);transform:rotate(45deg)}
+.bub b{color:var(--pink2)}
+/* callouts */
+.note{position:relative;margin:18px 0 14px;padding:16px 16px 12px;border:3px dashed var(--lav2);border-radius:16px;background:var(--codebg);max-width:78ch}
+.note>.tag{position:absolute;top:-13px;left:14px}
+.note.tip{border-color:var(--ok);background:var(--okbg)}.note.tip>.tag{background:var(--ok);border-color:var(--ok);color:#fff}
+.note.warn{border-color:var(--warn);background:var(--warnbg)}.note.warn>.tag{background:var(--warn);border-color:var(--warn);color:#fff}
+.note p:last-child{margin-bottom:0}
+/* kode beranotasi */
+.ann{border:3px solid var(--line);border-radius:16px;overflow:hidden;margin:14px 0;background:var(--codebg)}
+.ann-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:var(--codebar);padding:7px 12px;font-family:var(--f-mono);font-size:.8rem;font-weight:600;color:var(--ink)}
+.ag{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:0 12px;width:100%;text-align:left;background:none;border:0;border-top:1.5px dashed color-mix(in srgb,var(--line) 35%,transparent);padding:7px 12px;color:var(--code)}
+.ag:hover,.ag[aria-expanded="true"]{background:color-mix(in srgb,var(--pink) 14%,transparent)}
+.ag .no{font-family:var(--f-mono);font-size:.74rem;color:var(--tk-com);text-align:right;min-width:2.4ch;white-space:pre;padding-top:3px;user-select:none}
+.ag pre{margin:0;min-width:0;overflow-x:auto;font-family:var(--f-mono);font-size:.84rem;line-height:1.6;white-space:pre}
+.ag .q{align-self:start;width:22px;height:22px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;font-size:.8rem;display:grid;place-items:center;margin-top:1px}
+.ag[aria-expanded="true"] .q{background:var(--line)}
+.an{padding:10px 14px 12px 14px;background:var(--pinkbg2);border-top:2px solid var(--pink);font-size:.95rem;line-height:1.65}
+.an p{margin:0 0 8px;max-width:none}.an p:last-child{margin-bottom:0}
+.an .why{display:block;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink2);margin-bottom:2px}
+.tk-kw{color:var(--tk-kw);font-weight:600}.tk-str{color:var(--tk-str)}.tk-com{color:var(--tk-com);font-style:italic}.tk-num{color:var(--tk-num)}.tk-tag{color:var(--tk-tag);font-weight:600}.tk-prop{color:var(--tk-prop)}
+/* playground */
+.pg{border:3px solid var(--line);border-radius:18px;overflow:hidden;margin:16px 0;background:var(--paper)}
+.pg-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:var(--codebar);padding:8px 12px}
+.pg-tabs{display:flex;gap:6px}
+.pg-tabs button{padding:3px 12px;border-radius:999px;border:2.5px solid var(--line);background:var(--paper);font-family:var(--f-mono);font-size:.78rem;font-weight:600}
+.pg-tabs button[aria-pressed="true"]{background:var(--pink);border-color:var(--pink2);color:#fff}
+.pg-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:760px){.pg-body{grid-template-columns:minmax(0,1fr)}}
+.pg textarea{display:block;width:100%;height:100%;min-height:230px;border:0;border-right:2px dashed var(--lav2);padding:12px;background:var(--codebg);color:var(--code);font-family:var(--f-mono);font-size:.84rem;line-height:1.55;resize:vertical;tab-size:2;white-space:pre;overflow:auto}
+.pg-out{min-width:0;display:flex;flex-direction:column;background:#fff}
+.pg-out iframe{flex:1;width:100%;min-height:230px;border:0;background:#fff;display:block}
+.pg-con{background:#241f4d;color:#efeaff;font-family:var(--f-mono);font-size:.8rem;padding:8px 12px;max-height:150px;overflow:auto;white-space:pre-wrap}
+.pg-con:empty{display:none}
+.pg-con .err{color:#ff9db8}
+.pg-f{padding:9px 12px;border-top:2px dashed var(--lav2);display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:.9rem}
+.goal{flex:1 1 220px;min-width:0}
+.res{font-weight:800}.res.ok{color:var(--ok)}.res.bad{color:var(--bad)}
+/* kuis */
+.qz{border:3px solid var(--line);border-radius:18px;padding:16px 16px 14px;margin:18px 0;background:var(--paper)}
+.qz .qq{font-weight:800;margin:0 0 10px}
+.qz .qo{display:block;width:100%;text-align:left;margin:0 0 8px;padding:9px 14px;border:3px solid var(--lav2);border-radius:14px;background:var(--paper);font-weight:700;color:var(--ink)}
+.qz .qo:hover:not([disabled]){background:var(--lav)}
+.qz .qo.good{background:var(--okbg);border-color:var(--ok)}
+.qz .qo.bad{background:var(--badbg);border-color:var(--bad)}
+.qz .qo[disabled]{cursor:default}
+.qz .why{margin-top:6px;padding:10px 12px;border-radius:12px;background:var(--pinkbg2);border:2px dashed var(--pink);font-size:.95rem}
+.qz .tag{margin-bottom:8px}
+/* demo */
+.demo{border:3px solid var(--line);border-radius:18px;margin:18px 0;background:var(--paper);overflow:hidden}
+.demo-h{background:var(--pink);color:#fff;padding:5px 14px;font-family:var(--f-disp);font-size:1.2rem;line-height:1.4;text-shadow:0 1px 0 rgba(0,0,0,.2)}
+.demo-b{padding:14px;display:grid;gap:12px;min-width:0}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.ctl label{font-weight:800;font-size:.86rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ctl input[type=range]{accent-color:var(--pink2);width:130px}
+.ctl select,.ctl input[type=text],.ctl input[type=number],.ctl input[type=search]{border:2.5px solid var(--line);border-radius:12px;padding:4px 10px;background:var(--paper);color:var(--ink);min-width:0;max-width:100%}
+.ctl input[type=color]{width:38px;height:30px;border:2.5px solid var(--line);border-radius:8px;padding:0;background:var(--paper)}
+.codeout{margin:0;background:var(--codebg);border:2px dashed var(--lav2);border-radius:12px;padding:10px 12px;font-family:var(--f-mono);font-size:.8rem;line-height:1.55;overflow-x:auto;white-space:pre;color:var(--code)}
+.stage{border:2.5px dashed var(--lav2);border-radius:14px;background:var(--frame);padding:14px;min-height:120px;min-width:0;overflow:auto}
+.logbox{background:#241f4d;color:#efeaff;font-family:var(--f-mono);font-size:.8rem;border-radius:12px;padding:8px 12px;min-height:56px;max-height:160px;overflow:auto;white-space:pre-wrap}
+.days{display:flex;gap:4px;flex-wrap:wrap}
+.days button{width:36px;height:42px;border-radius:10px;border:2.5px solid var(--line);background:var(--paper);font-size:.7rem;font-weight:800;color:var(--ink);line-height:1.2}
+.days button[aria-pressed="true"]{background:var(--pink);border-color:var(--pink2);color:#fff}
+.days button.cut{outline:3px solid var(--blue2)}
+table.t{border-collapse:collapse;width:100%;font-size:.88rem}
+table.t th{text-align:left;border-bottom:3px solid var(--line);padding:5px 8px;font-size:.76rem;white-space:nowrap}
+table.t td{padding:6px 8px;border-bottom:1.5px dashed var(--lav2)}
+.scroll{overflow-x:auto;max-width:100%}
+/* beranda */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:12px 0 4px}
+.path{display:flex;flex-direction:column;gap:6px;text-align:left;padding:14px;border:3px solid var(--line);border-radius:18px;background:var(--paper);color:var(--ink);box-shadow:0 4px 0 color-mix(in srgb,var(--line) 40%,transparent)}
+.path:hover{background:var(--lav)}
+.path .pn{font-family:var(--f-disp);font-size:1.5rem;line-height:1.2;color:var(--pink2)}
+.path .pd{font-size:.88rem;line-height:1.5;flex:1}
+.mini{height:10px;border-radius:999px;border:2px solid var(--line);background:var(--paper);overflow:hidden}
+.mini i{display:block;height:100%;background:var(--pink)}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.badge{border:2.5px dashed var(--lav2);border-radius:14px;padding:8px 10px;font-size:.82rem;line-height:1.35;display:flex;gap:8px;align-items:flex-start}
+.badge svg{width:26px;height:26px;flex:none;color:var(--lav2)}
+.badge.on{border-style:solid;border-color:var(--pink);background:var(--pinkbg2)}
+.badge.on svg{color:#f2b134}
+.badge b{display:block}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--pink2);color:#fff;border:3px solid var(--paper);border-radius:999px;padding:7px 20px;font-weight:800;z-index:30;box-shadow:0 4px 0 rgba(0,0,0,.2);max-width:calc(100vw - 32px);text-align:center}
+.nav2{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-top:26px}
+.foot{background:repeating-linear-gradient(90deg,var(--stA) 0 26px,var(--stB) 26px 52px);text-align:center;padding:14px;font-size:.82rem;font-weight:800;color:var(--ink)}
+.foot span{background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:3px 16px}
+@media (max-width:640px){
+  .doily{width:44px;height:44px;top:70px}.bow{width:92px}.arch{padding:46px 14px 12px}
+  .main{padding:12px 10px}.panel{padding:16px 14px 20px}.hd-tools{top:10px;right:8px}
+  .tab{font-size:1.1rem;padding:4px 12px 6px}
+  .mascot svg{width:64px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+</style>
+<div id="wrap">
+ <header class="hd">
+  <div class="hd-tools"><button class="ibtn" id="btnTheme" aria-label="Ganti terang atau gelap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></svg></button></div>
+  <div class="arch"><svg class="bow" viewBox="0 0 120 70" aria-hidden="true"><path d="M60 35C42 8 8 4 8 30s32 28 52 5z" fill="var(--pink)" stroke="var(--pink2)" stroke-width="3" stroke-linejoin="round"/><path d="M60 35C78 8 112 4 112 30S80 58 60 35z" fill="var(--pink)" stroke="var(--pink2)" stroke-width="3" stroke-linejoin="round"/><path d="M60 38C46 50 36 64 30 66M60 38c14 12 24 26 30 28" fill="none" stroke="var(--pink2)" stroke-width="3" stroke-linecap="round"/><path d="M24 22c8-6 20-4 28 8M96 22c-8-6-20-4-28 8" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".6"/><circle cx="60" cy="35" r="11" fill="var(--blue)" stroke="var(--blue2)" stroke-width="3"/><circle cx="56.5" cy="32" r="1.8" fill="var(--blue2)"/><circle cx="63.5" cy="32" r="1.8" fill="var(--blue2)"/><circle cx="56.5" cy="38" r="1.8" fill="var(--blue2)"/><circle cx="63.5" cy="38" r="1.8" fill="var(--blue2)"/></svg><svg class="doily l" viewBox="0 0 100 100" aria-hidden="true"><g fill="var(--paper)" stroke="var(--lav2)" stroke-width="2.5"><circle cx="84.0" cy="50.0" r="11"/><circle cx="79.4" cy="67.0" r="11"/><circle cx="67.0" cy="79.4" r="11"/><circle cx="50.0" cy="84.0" r="11"/><circle cx="33.0" cy="79.4" r="11"/><circle cx="20.6" cy="67.0" r="11"/><circle cx="16.0" cy="50.0" r="11"/><circle cx="20.6" cy="33.0" r="11"/><circle cx="33.0" cy="20.6" r="11"/><circle cx="50.0" cy="16.0" r="11"/><circle cx="67.0" cy="20.6" r="11"/><circle cx="79.4" cy="33.0" r="11"/><circle cx="50" cy="50" r="34" stroke="none"/></g><circle cx="50" cy="50" r="26" fill="none" stroke="var(--pink)" stroke-width="2" stroke-dasharray="3 4"/><circle cx="50" cy="50" r="14" fill="var(--pinkbg)" stroke="var(--pink)" stroke-width="2"/><circle cx="50" cy="50" r="4" fill="var(--pink)"/></svg><svg class="doily r" viewBox="0 0 100 100" aria-hidden="true"><g fill="var(--paper)" stroke="var(--lav2)" stroke-width="2.5"><circle cx="84.0" cy="50.0" r="11"/><circle cx="79.4" cy="67.0" r="11"/><circle cx="67.0" cy="79.4" r="11"/><circle cx="50.0" cy="84.0" r="11"/><circle cx="33.0" cy="79.4" r="11"/><circle cx="20.6" cy="67.0" r="11"/><circle cx="16.0" cy="50.0" r="11"/><circle cx="20.6" cy="33.0" r="11"/><circle cx="33.0" cy="20.6" r="11"/><circle cx="50.0" cy="16.0" r="11"/><circle cx="67.0" cy="20.6" r="11"/><circle cx="79.4" cy="33.0" r="11"/><circle cx="50" cy="50" r="34" stroke="none"/></g><circle cx="50" cy="50" r="26" fill="none" stroke="var(--pink)" stroke-width="2" stroke-dasharray="3 4"/><circle cx="50" cy="50" r="14" fill="var(--pinkbg)" stroke="var(--pink)" stroke-width="2"/><circle cx="50" cy="50" r="4" fill="var(--pink)"/></svg>
+   <h1 class="logo">Belajar Ngoding</h1><p class="tagline">bareng Pita, dari nol sampai paham Kebun Murojaah</p></div>
+ </header>
+ <nav class="tabs" id="tabs" aria-label="Bagian materi"></nav>
+ <div class="argyle"></div>
+ <div class="stats" id="stats"></div>
+ <main class="main" id="main"></main>
+ <footer class="foot"><span>dibuat dengan ♥ untuk belajar · by Aisyah</span></footer>
+</div>
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rich=s=>String(s).replace(/\[\[([\s\S]+?)\]\](?!\])/g,(m,x)=>'<code class="i">'+esc(x)+'</code>');
+/* ---------- penyimpanan (boleh gagal) ---------- */
+const KEY='belajar-ngoding-v1';
+let S={done:{},xp:0,seen:{},quiz:{},pg:{},theme:''};
+try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r&&typeof r==='object')S=Object.assign(S,r)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
+function gain(n,why){S.xp+=n;save();renderStats();toast('+'+n+' XP · '+why)}
+/* ---------- penyorot kode ---------- */
+const KW='const|let|var|function|return|if|else|for|while|async|await|new|try|catch|true|false|null|undefined|of|in|switch|case|break|continue|class|import|def|print|None|True|False|elif|from|lambda|and|or|not';
+const RX={
+ js:new RegExp('(\\/\\/.*|#.*|\\/\\*[\\s\\S]*?\\*\\/)|("(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'|`(?:\\\\.|[^`\\\\])*`)|\\b('+KW+')\\b|(\\b\\d+(?:\\.\\d+)?\\b)','g'),
+ css:/(\/\*[\s\S]*?\*\/)|("[^"]*"|'[^']*')|(@media|@import|!important)|(#[0-9a-fA-F]{3,8}\b|\b\d+(?:\.\d+)?(?:px|rem|em|%|vh|vw|s|ms|deg)?\b)|(--?[a-zA-Z][\w-]*(?=\s*:))/g,
+ html:/(<!--[\s\S]*?-->)|("[^"]*")|(<\/?[a-zA-Z!][\w-]*|\/?>)|()|([a-zA-Z-]+(?==))/g,
+ txt:/$^/g};
+const CLS=['','tk-com','tk-str','tk-kw','tk-num','tk-prop'];
+function hl(src,lang){
+  const rx=RX[lang]||RX.txt;rx.lastIndex=0;let out='',last=0,m;
+  const cl={js:['','tk-com','tk-str','tk-kw','tk-num'],css:['','tk-com','tk-str','tk-kw','tk-num','tk-prop'],html:['','tk-com','tk-str','tk-tag','','tk-prop']}[lang]||[];
+  while((m=rx.exec(src))){
+    if(m[0]==='')break;
+    out+=esc(src.slice(last,m.index));
+    let g=1;while(g<m.length&&m[g]===undefined)g++;
+    out+='<span class="'+(cl[g]||'')+'">'+esc(m[0])+'</span>';last=m.index+m[0].length;
+  }
+  return out+esc(src.slice(last));
+}
+/* ---------- penyusun blok ---------- */
+const P_=t=>({k:'p',t}),H_=t=>({k:'h',t}),U_=(...a)=>({k:'ul',a}),N_=(c,t,h)=>({k:'note',c,t,h}),
+ A_=(file,lang,lines)=>({k:'ann',file,lang,lines}),C_=(file,lang,src)=>({k:'code',file,lang,src}),
+ G_=o=>Object.assign({k:'pg'},o),Z_=(q,o,a,why)=>({k:'qz',q,o,a,why}),D_=n=>({k:'demo',n}),
+ T_=(head,rows)=>({k:'tbl',head,rows});
+let UID=0;
+function blk(b,ch){
+  const id=ch.id+'.'+(UID++);
+  switch(b.k){
+  case 'p':return '<p>'+rich(b.t)+'</p>';
+  case 'h':return '<h3 class="sub">'+rich(b.t)+'</h3>';
+  case 'ul':return '<ul class="l">'+b.a.map(x=>'<li>'+rich(x)+'</li>').join('')+'</ul>';
+  case 'note':return '<div class="note '+(b.c||'')+'"><span class="tag">'+esc(b.t)+'</span>'+b.h.map(x=>'<p>'+rich(x)+'</p>').join('')+'</div>';
+  case 'tbl':return '<div class="scroll"><table class="t"><thead><tr>'+b.head.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+b.rows.map(r=>'<tr>'+r.map(c=>'<td>'+rich(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+  case 'code':return '<div class="ann"><div class="ann-h"><span>'+esc(b.file)+'</span></div><pre class="codeout" style="border:0;border-radius:0">'+hl(b.src,b.lang)+'</pre></div>';
+  case 'ann':{
+    let n=0;const w=String(b.lines.length).length;
+    const rows=b.lines.map((l,i)=>{
+      const lid=id+'.'+i,hasA=l.length>1;
+      const num='<span class="no">'+(l[0].trim()===''?'':(++n))+'</span>';
+      const body='<pre>'+(hl(l[0],b.lang)||' ')+'</pre>';
+      if(!hasA)return '<div class="ag" style="cursor:default;grid-template-columns:auto minmax(0,1fr)">'+num+body+'</div>';
+      const done=S.seen[lid]?'':'';
+      return '<button class="ag" data-a="ln" data-lid="'+lid+'" aria-expanded="false">'+num+body+'<span class="q" aria-hidden="true">?</span></button>'
+       +'<div class="an" hidden>'+(l[1]?'<p><span class="why">Kenapa baris ini ada?</span>'+rich(l[1])+'</p>':'')+(l[2]?'<p><span class="why">Fungsinya</span>'+rich(l[2])+'</p>':'')+(l[3]?'<p><span class="why">Tujuannya</span>'+rich(l[3])+'</p>':'')+'</div>';
+    }).join('');
+    return '<div class="ann"><div class="ann-h"><span>'+esc(b.file)+'</span><span>ketuk baris bertanda ? untuk penjelasannya</span></div>'+rows+'</div>';}
+  case 'qz':return '<div class="qz" data-qid="'+id+'" data-a="'+b.a+'"><span class="tag">Kuis</span><p class="qq">'+rich(b.q)+'</p>'+b.o.map((o,i)=>'<button class="qo" data-a="qo" data-i="'+i+'">'+rich(o)+'</button>').join('')+'<div class="why" hidden>'+rich(b.why)+'</div></div>';
+  case 'demo':return '<div class="demo" data-demo="'+b.n+'"><div class="demo-h">'+esc(DEMOS[b.n].t)+'</div><div class="demo-b"></div></div>';
+  case 'pg':{
+    PGS[id]=b;
+    const multi=b.files;
+    return '<div class="pg" data-pid="'+id+'"><div class="pg-h"><span class="tag">Coba sendiri</span><div class="row"><button class="btn s g" data-a="pgreset">Reset</button><button class="btn s p" data-a="pgrun">Jalankan ▶</button></div></div>'
+     +'<div class="pg-body"><textarea spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Editor kode">'+esc(b.code)+'</textarea><div class="pg-out"><iframe title="Hasil" sandbox="allow-scripts allow-same-origin"></iframe><div class="pg-con"></div></div></div>'
+     +'<div class="pg-f"><span class="goal">'+(b.goal?'🎯 <b>Tantangan:</b> '+rich(b.goal):'Ubah kodenya lalu tekan Jalankan.')+'</span><span class="res" role="status"></span></div></div>';}
+  }return '';
+}
+const PGS={};
+/* ---------- playground ---------- */
+const CAP='<script>(function(){var P=window.parent,id="__ID__";function f(a){return Array.prototype.map.call(a,function(x){try{return typeof x==="object"?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(" ")}["log","warn","error"].forEach(function(k){var o=console[k];console[k]=function(){P.postMessage({pg:id,k:k,t:f(arguments)},"*");o.apply(console,arguments)}});window.addEventListener("error",function(e){P.postMessage({pg:id,k:"error",t:e.message},"*")})})()<\/script>';
+const LOGS={};
+function pgRun(box,quiet){
+  const id=box.dataset.pid,b=PGS[id],ta=$('textarea',box),fr=$('iframe',box),con=$('.pg-con',box),res=$('.res',box);
+  LOGS[id]=[];con.textContent='';res.textContent='';res.className='res';
+  let code=ta.value;
+  const wrapped=b.js?'<!doctype html><meta charset="utf-8"><body><script>'+code+'<\/script>':/<html|<!doctype/i.test(code)?code:'<!doctype html><meta charset="utf-8"><body style="font-family:system-ui,sans-serif;margin:12px;color:#222">'+code;
+  fr.onload=()=>{
+    setTimeout(()=>{
+      if(!b.check||quiet)return;
+      let ok=false;try{ok=!!b.check(fr.contentDocument,LOGS[id],ta.value)}catch(e){ok=false}
+      if(ok){res.textContent='✓ Berhasil!';res.className='res ok';if(!S.pg[id]){S.pg[id]=1;gain(15,'tantangan selesai')}}
+      else{res.textContent='Belum pas, coba lagi ya';res.className='res bad'}
+    },120);
+  };
+  fr.srcdoc=CAP.replace('__ID__',id)+wrapped;
+}
+window.addEventListener('message',e=>{
+  const d=e.data;if(!d||!d.pg||!PGS[d.pg])return;
+  (LOGS[d.pg]=LOGS[d.pg]||[]).push(d.t);
+  const box=$('.pg[data-pid="'+CSS.escape(d.pg)+'"]');if(!box)return;
+  const con=$('.pg-con',box);const s=document.createElement('div');if(d.k==='error')s.className='err';s.textContent=(d.k==='error'?'⚠ ':'› ')+d.t;con.appendChild(s);
+});
+/* ---------- maskot ---------- */
+const MASCOT='<svg viewBox="0 0 100 110" aria-hidden="true"><ellipse cx="32" cy="26" rx="11" ry="25" fill="#fff" stroke="var(--line)" stroke-width="3.5"/><ellipse cx="68" cy="26" rx="11" ry="25" fill="#fff" stroke="var(--line)" stroke-width="3.5"/><ellipse cx="32" cy="28" rx="5" ry="16" fill="var(--pinkbg)"/><ellipse cx="68" cy="28" rx="5" ry="16" fill="var(--pinkbg)"/><circle cx="50" cy="68" r="34" fill="#fff" stroke="var(--line)" stroke-width="3.5"/><circle cx="38" cy="66" r="4" fill="#3b3585"/><circle cx="62" cy="66" r="4" fill="#3b3585"/><circle cx="39.5" cy="64.5" r="1.4" fill="#fff"/><circle cx="63.5" cy="64.5" r="1.4" fill="#fff"/><ellipse cx="29" cy="77" rx="6" ry="4" fill="#fbb4d6"/><ellipse cx="71" cy="77" rx="6" ry="4" fill="#fbb4d6"/><path d="M44 77q6 6 12 0" fill="none" stroke="#3b3585" stroke-width="3" stroke-linecap="round"/><path d="M50 40c-9-9-22-5-19 4 3 6 14 3 19-4zm0 0c9-9 22-5 19 4-3 6-14 3-19-4z" fill="#e07fb5" stroke="#bf3f89" stroke-width="2.5" stroke-linejoin="round"/><circle cx="50" cy="42" r="4.5" fill="#d3dcfb" stroke="#4559bd" stroke-width="2"/></svg>';
+/* ---------- kerangka ---------- */
+const TABS=[['beranda','Beranda'],['html','HTML'],['css','CSS'],['js','JavaScript'],['lain','Bahasa Lain'],['bedah','Bedah Kebun']];
+const CHAPS=()=>Object.entries(BOOK).flatMap(([t,b])=>b.ch.map(c=>Object.assign({tab:t},c)));
+let view={tab:'beranda',ch:0};
+function parseHash(){const h=(location.hash||'').slice(1).split('-');const t=h[0];if(TABS.some(x=>x[0]===t)){view.tab=t;view.ch=Math.max(0,(+h[1]||1)-1)}else{view.tab='beranda';view.ch=0}}
+function setView(t,c){
+  const h=t+(t==='beranda'?'':'-'+((c||0)+1));
+  if(location.hash.slice(1)===h)render();else location.hash=h;
+}
+function renderStats(){
+  const total=CHAPS().length,d=CHAPS().filter(c=>S.done[c.id]).length,lv=Math.floor(S.xp/60)+1;
+  $('#stats').innerHTML='<span>🎀 Level '+lv+'</span><div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="60" aria-valuenow="'+(S.xp%60)+'" aria-label="XP menuju level berikutnya"><i style="width:'+(S.xp%60)/60*100+'%"></i></div><span>⭐ '+S.xp+' XP</span><span>📖 '+d+'/'+total+' bab</span>';
+}
+function renderTabs(){
+  $('#tabs').innerHTML=TABS.map(t=>'<button class="tab" data-a="tab" data-t="'+t[0]+'" '+(t[0]===view.tab?'aria-current="page"':'')+'>'+t[1]+'</button>').join('');
+}
+function badgesDef(){
+  const dn=CHAPS().filter(c=>S.done[c.id]),q=Object.keys(S.quiz).length,p=Object.keys(S.pg).length,ln=Object.keys(S.seen).length;
+  const bd=dn.filter(c=>c.tab==='bedah').length;
+  return [['Langkah pertama','Selesaikan 1 bab',dn.length>=1],['Rajin baca','Selesaikan 5 bab',dn.length>=5],['Penjelajah kode','Buka 25 baris penjelasan',ln>=25],['Detektif baris','Buka 100 baris penjelasan',ln>=100],
+   ['Jago kuis','Jawab 8 kuis dengan benar',q>=8],['Tukang coba','Selesaikan 3 tantangan',p>=3],['Programmer cilik','Selesaikan 6 tantangan',p>=6],['Anak Kebun','Selesaikan 5 bab Bedah Kebun',bd>=5],['Lulus Kebun','Selesaikan semua bab Bedah Kebun',bd>=BOOK.bedah.ch.length],['Level 5','Kumpulkan 240 XP',S.xp>=240]];
+}
+const ICO_STAR='<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="currentColor" stroke="var(--line)" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+function renderHome(){
+  const tabs=Object.entries(BOOK);
+  const paths=tabs.map(([t,b],i)=>{const n=b.ch.length,d=b.ch.filter(c=>S.done[c.id]).length;
+    return '<button class="path" data-a="tab" data-t="'+t+'"><span class="pn">'+esc(b.name)+'</span><span class="pd">'+esc(b.desc)+'</span><span class="mini" aria-hidden="true"><i style="width:'+d/n*100+'%"></i></span><span class="pd">'+d+' dari '+n+' bab selesai</span></button>'}).join('');
+  const bds=badgesDef().map(b=>'<div class="badge '+(b[2]?'on':'')+'">'+ICO_STAR+'<span><b>'+esc(b[0])+'</b>'+esc(b[1])+'</span></div>').join('');
+  let next=CHAPS().find(c=>!S.done[c.id]);
+  return '<div class="mascot">'+MASCOT+'<div class="bub">Halo! Aku <b>Pita</b> 🎀 Aku temani kamu belajar ngoding dari nol sampai paham isi web <b>Kebun Murojaah</b> buatanmu sendiri. Santai aja, ketuk-ketuk dan coba-coba!</div></div>'
+   +'<div class="plaid"><h2 class="ptitle">Mau belajar apa hari ini?</h2></div>'
+   +'<div class="paths">'+paths+'</div>'
+   +(next?'<div class="row" style="margin-top:18px"><button class="btn p" data-a="goch" data-t="'+next.tab+'" data-c="'+BOOK[next.tab].ch.indexOf(BOOK[next.tab].ch.find(c=>c.id===next.id))+'">Lanjut belajar: '+esc(next.t)+' →</button></div>':'<p style="margin-top:16px"><b>Semua bab sudah selesai! 🎉</b> Kamu hebat banget.</p>')
+   +'<div class="lace"></div><h3 class="sub" style="margin-top:0">Lencana kamu</h3><div class="badges">'+bds+'</div>'
+   +'<div class="lace"></div><h3 class="sub" style="margin-top:0">Cara pakai web ini</h3>'
+   +'<ul class="l"><li>Baris kode yang ada tanda <b>?</b> bisa diketuk. Penjelasannya muncul: kenapa baris itu ada, fungsinya, dan tujuannya.</li><li>Kotak <b>Coba sendiri</b> bisa kamu ubah isinya lalu dijalankan. Kalau ada tantangan, selesaikan untuk dapat XP.</li><li>Kuis dan demo ada di tiap bab. Progresmu tersimpan di browser ini.</li><li>Belum paham? Ulangi bab-nya. Tidak ada yang buru-buru.</li></ul>'
+   +'<p class="tag" style="margin-top:8px">Data progres hanya tersimpan di perangkat ini</p> <button class="btn s g" data-a="reset" style="margin-left:6px">Hapus progres</button>';
+}
+function renderChapter(){
+  const b=BOOK[view.tab],ch=b.ch[Math.min(view.ch,b.ch.length-1)];if(!ch)return '';
+  UID=0;
+  const chips=b.ch.map((c,i)=>'<button class="chip '+(S.done[c.id]?'done':'')+'" data-a="goch" data-t="'+view.tab+'" data-c="'+i+'" '+(i===view.ch?'aria-current="true"':'')+'><span class="ck">'+(S.done[c.id]?'✓':i+1)+'</span>'+esc(c.t)+'</button>').join('');
+  const i=view.ch;
+  return '<div class="plaid"><h2 class="ptitle">'+esc(b.name)+'</h2></div><div class="chips">'+chips+'</div>'
+   +'<div class="mascot">'+MASCOT+'<div class="bub">'+rich(ch.say)+'</div></div>'
+   +'<span class="rib">'+esc(ch.t)+'</span>'+ch.blocks.map(x=>blk(x,ch)).join('')
+   +'<div class="lace"></div><div class="row"><button class="btn p" data-a="finish" data-id="'+ch.id+'" '+(S.done[ch.id]?'disabled':'')+'>'+(S.done[ch.id]?'✓ Bab ini sudah selesai':'Tandai selesai (+10 XP)')+'</button></div>'
+   +'<div class="nav2"><button class="btn" data-a="goch" data-t="'+view.tab+'" data-c="'+(i-1)+'" '+(i<=0?'disabled':'')+'>← Sebelumnya</button><button class="btn" data-a="goch" data-t="'+view.tab+'" data-c="'+(i+1)+'" '+(i>=b.ch.length-1?'disabled':'')+'>Berikutnya →</button></div>';
+}
+function render(){
+  parseHash();renderTabs();renderStats();
+  const m=$('#main');m.innerHTML='<div class="panel">'+(view.tab==='beranda'?renderHome():renderChapter())+'</div>';
+  $$('.demo',m).forEach(d=>{const D=DEMOS[d.dataset.demo];const body=$('.demo-b',d);body.innerHTML=D.h;D.i&&D.i(body)});
+  $$('.pg',m).forEach(p=>pgRun(p,true));
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+/* ---------- aksi ---------- */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a;
+  if(a==='tab')setView(el.dataset.t,0);
+  else if(a==='goch')setView(el.dataset.t,+el.dataset.c);
+  else if(a==='ln'){
+    const open=el.getAttribute('aria-expanded')==='true';el.setAttribute('aria-expanded',String(!open));el.nextElementSibling.hidden=open;
+    const id=el.dataset.lid;if(!open&&!S.seen[id]){S.seen[id]=1;gain(1,'baris dibaca')}
+  }
+  else if(a==='qo'){
+    const q=el.closest('.qz');if(q.dataset.done)return;q.dataset.done='1';
+    const right=+q.dataset.a,i=+el.dataset.i;
+    $$('.qo',q).forEach((b,j)=>{b.disabled=true;if(j===right)b.classList.add('good');else if(j===i)b.classList.add('bad')});
+    $('.why',q).hidden=false;
+    if(i===right){const id=q.dataset.qid;if(!S.quiz[id]){S.quiz[id]=1;gain(5,'jawaban benar')}else toast('Benar! 🎉')}
+    else toast('Belum tepat, baca penjelasannya ya');
+  }
+  else if(a==='pgrun')pgRun(el.closest('.pg'));
+  else if(a==='pgreset'){const b=el.closest('.pg');$('textarea',b).value=PGS[b.dataset.pid].code;pgRun(b)}
+  else if(a==='finish'){if(!S.done[el.dataset.id]){S.done[el.dataset.id]=1;gain(10,'bab selesai');render()}}
+  else if(a==='reset'){if(el.dataset.sure){S={done:{},xp:0,seen:{},quiz:{},pg:{},theme:S.theme};save();render()}else{el.dataset.sure=1;el.textContent='Yakin? ketuk lagi';}}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Tab'&&e.target.matches('.pg textarea')){e.preventDefault();const t=e.target,s=t.selectionStart;t.value=t.value.slice(0,s)+'  '+t.value.slice(t.selectionEnd);t.selectionStart=t.selectionEnd=s+2}});
+window.addEventListener('hashchange',render);
+function applyTheme(){const r=document.documentElement;if(S.theme)r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme')}
+const isDark=()=>S.theme?S.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+function init(){
+  applyTheme();
+  $('#btnTheme').addEventListener('click',()=>{S.theme=isDark()?'light':'dark';save();applyTheme()});
+  render();
+}
+
+"use strict";
+const DEMOS={};
+/* 1. variabel CSS */
+DEMOS.vars={t:'Mainkan variabel CSS',h:`<div class="ctl"><label>Warna aksen <input type="range" min="0" max="360" value="330" data-r="h"></label><label><input type="checkbox" data-r="dk"> mode gelap</label></div>
+<div class="stage" data-st style="--ink:#3b3585;--card:#fff;--bg:#fdeaf4"><div data-card style="background:var(--bg);color:var(--ink);border:3px solid var(--accent);border-radius:16px;padding:14px"><b style="color:var(--accent)">Kartu contoh</b><p style="margin:4px 0 8px">Semua warna di sini ambil dari variabel.</p><span style="background:var(--accent);color:#fff;padding:3px 14px;border-radius:99px;font-weight:800">Tombol</span></div></div><pre class="codeout" data-o></pre>`,
+i(b){const st=$('[data-st]',b),o=$('[data-o]',b);const f=()=>{const h=$('[data-r=h]',b).value,dk=$('[data-r=dk]',b).checked;
+ const acc='hsl('+h+' 70% '+(dk?'72%':'48%')+')',bg=dk?'#2a2552':'#fdeaf4',ink=dk?'#efeaff':'#3b3585';
+ st.style.setProperty('--accent',acc);st.style.setProperty('--bg',bg);st.style.setProperty('--ink',ink);
+ o.textContent=':root{\n  --accent: '+acc+';\n  --bg: '+bg+';\n  --ink: '+ink+';\n}\n.kartu{ background:var(--bg); color:var(--ink); border:3px solid var(--accent) }'};
+ b.addEventListener('input',f);f()}};
+/* 2. flexbox */
+DEMOS.flex={t:'Mainkan Flexbox',h:`<div class="ctl"><label>justify-content <select data-r="j"><option>flex-start</option><option>center</option><option>space-between</option><option>space-around</option><option>flex-end</option></select></label><label>align-items <select data-r="a"><option>stretch</option><option>flex-start</option><option>center</option><option>flex-end</option></select></label><label>direction <select data-r="d"><option>row</option><option>column</option></select></label><label>gap <input type="range" min="0" max="30" value="8" data-r="g"></label></div>
+<div class="stage" data-st style="display:flex;min-height:170px"></div><pre class="codeout" data-o></pre>`,
+i(b){const st=$('[data-st]',b),o=$('[data-o]',b);st.innerHTML=['A','B','C'].map((x,i)=>'<div style="background:var(--pink);color:#fff;font-weight:800;border-radius:10px;padding:'+(8+i*8)+'px 18px;display:grid;place-items:center">'+x+'</div>').join('');
+ const f=()=>{const v=k=>$('[data-r='+k+']',b).value;st.style.justifyContent=v('j');st.style.alignItems=v('a');st.style.flexDirection=v('d');st.style.gap=v('g')+'px';
+ o.textContent='.wadah{\n  display: flex;\n  justify-content: '+v('j')+';\n  align-items: '+v('a')+';\n  flex-direction: '+v('d')+';\n  gap: '+v('g')+'px;\n}'};
+ b.addEventListener('input',f);f()}};
+/* 3. router */
+DEMOS.router={t:'Router mini (seperti go() di Kebun)',h:`<div class="ctl" data-nav></div><div class="stage" data-st></div><pre class="codeout" data-o></pre>`,
+i(b){const PAGES=['beranda','murojaah','akun'],C={beranda:'🏠 Ini halaman Beranda. Streak-mu tampil di sini.',murojaah:'📖 Ini halaman Murojaah. Timer ada di sini.',akun:'👤 Ini halaman Akun.'};let cur='beranda';
+ const nav=$('[data-nav]',b),st=$('[data-st]',b),o=$('[data-o]',b);
+ const renderPage=()=>{nav.innerHTML=PAGES.map(p=>'<button class="btn s '+(p===cur?'p':'')+'" data-go="'+p+'">'+p+'</button>').join('');st.textContent=C[cur];o.textContent='cur = "'+cur+'"\nPAGES.forEach(n => $("#p-"+n).hidden = n !== cur)\n$("#p-"+cur).innerHTML = P[cur]()'};
+ const go=n=>{if(!PAGES.includes(n))n='beranda';cur=n;renderPage()};
+ b.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});renderPage()}};
+/* 4. delegasi event */
+DEMOS.deleg={t:'Satu listener untuk semua tombol',h:`<div class="ctl"><button class="btn s p" data-add>+ Tambah tombol baru</button></div><div class="stage" data-st style="display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start"></div><div class="logbox" data-log>Tekan tombol-tombolnya…</div>`,
+i(b){const st=$('[data-st]',b),log=$('[data-log]',b);let n=0;const ACT={halo:el=>'Halo dari '+el.textContent,koin:()=>'+5 koin 🪙',hapus:el=>{el.remove();return 'tombol dihapus'}};
+ const acts=Object.keys(ACT);const add=()=>{n++;const a=acts[n%3],x=document.createElement('button');x.className='btn s';x.dataset.act=a;x.textContent='#'+n+' ('+a+')';st.appendChild(x)};add();add();
+ st.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(a&&ACT[a.dataset.act])log.textContent=ACT[a.dataset.act](a)+'\n(listener cuma 1, tombol baru langsung ikut jalan)\n'+log.textContent});
+ $('[data-add]',b).addEventListener('click',add)}};
+/* 5. streak */
+DEMOS.streak={t:'Hitung streak seperti di Kebun',h:`<p style="margin:0">Ketuk hari untuk menandai sudah murojaah (kotak paling kanan = hari ini).</p><div class="days" data-d></div><div class="row"><b data-r></b></div><pre class="codeout">while (m[d]) { cur++; d = addDays(d, -1) }</pre>`,
+i(b){const N=14,on=new Set([9,10,11,12,13,4,5,6]);const box=$('[data-d]',b),res=$('[data-r]',b);
+ const f=()=>{let cur=0,d=on.has(N-1)?N-1:N-2;while(on.has(d)){cur++;d--}let best=0,run=0;for(let i=0;i<N;i++){run=on.has(i)?run+1:0;best=Math.max(best,run)}
+  box.innerHTML=[...Array(N)].map((_,i)=>'<button data-i="'+i+'" aria-pressed="'+on.has(i)+'" class="'+(i>N-1-cur-(on.has(N-1)?0:0)&&false?'cut':'')+'">'+(i===N-1?'hari<br>ini':'-'+(N-1-i))+'</button>').join('');
+  res.textContent='Streak sekarang: '+cur+' hari · Terbaik: '+best+' hari'};
+ b.addEventListener('click',e=>{const x=e.target.closest('[data-i]');if(!x)return;const i=+x.dataset.i;on.has(i)?on.delete(i):on.add(i);f()});f()}};
+/* 6. localStorage */
+DEMOS.store={t:'localStorage & JSON',h:`<div class="ctl"><label>Nama <input type="text" data-n value="Aisyah" size="12"></label><label>Koin <input type="number" data-c value="10" style="width:5em"></label><button class="btn s p" data-s>save()</button><button class="btn s" data-l>load()</button></div><pre class="codeout" data-o>klik save() lalu load()</pre>`,
+i(b){const o=$('[data-o]',b);let mem=null;const KEY='demo-kebun';
+ $('[data-s]',b).onclick=()=>{const s=JSON.stringify({nama:$('[data-n]',b).value,koin:+$('[data-c]',b).value});try{localStorage.setItem(KEY,s)}catch(e){mem=s}o.textContent='localStorage.setItem("'+KEY+'", '+JSON.stringify(s)+')\n→ objek diubah jadi teks dulu (JSON.stringify)'};
+ $('[data-l]',b).onclick=()=>{let s=mem;try{s=localStorage.getItem(KEY)||mem}catch(e){}if(!s){o.textContent='Belum ada data. Tekan save() dulu.';return}const x=JSON.parse(s);o.textContent='teks tersimpan: '+s+'\nJSON.parse → objek: nama = '+x.nama+', koin = '+x.koin}}};
+/* 7. hash */
+DEMOS.hash={t:'Hash kata sandi (PBKDF2 sungguhan)',h:`<div class="ctl"><label>Sandi <input type="text" data-p value="kebun123" size="12"></label><label>Salt <input type="text" data-s value="aisyah" size="8"></label><button class="btn s p" data-go>Hitung hash</button></div><pre class="codeout" data-o style="white-space:pre-wrap;overflow-wrap:anywhere">Tekan tombolnya.</pre>`,
+i(b){const o=$('[data-o]',b);const hex=buf=>[...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('');
+ $('[data-go]',b).onclick=async()=>{o.textContent='Menghitung 150.000 putaran…';try{const t=performance.now(),k=await crypto.subtle.importKey('raw',new TextEncoder().encode($('[data-p]',b).value),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new TextEncoder().encode($('[data-s]',b).value),iterations:150000,hash:'SHA-256'},k,256);
+  o.textContent='p1:'+hex(bits)+'\n\n('+Math.round(performance.now()-t)+' ms. Sengaja dibuat lambat supaya penebak sandi capek.)\nCoba ubah 1 huruf sandi: hasilnya berubah total.'}catch(e){o.textContent='Browser ini tidak mendukung crypto.subtle di sini.'}}}};
+/* 8. nada */
+DEMOS.note={t:'Piano mini (rumus mtof)',h:`<div class="ctl" data-k style="gap:6px"></div><pre class="codeout" data-o>Ketuk tuts untuk bunyi.</pre>`,
+i(b){let ctx;const names=['C','D','E','F','G','A','B','C'],midi=[60,62,64,65,67,69,71,72];const mtof=m=>440*Math.pow(2,(m-69)/12);
+ $('[data-k]',b).innerHTML=midi.map((m,i)=>'<button class="btn" data-m="'+m+'" style="padding:14px 10px;min-width:44px">'+names[i]+'</button>').join('');
+ b.addEventListener('click',e=>{const x=e.target.closest('[data-m]');if(!x)return;const m=+x.dataset.m,f=mtof(m);try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();const t=ctx.currentTime,g=ctx.createGain(),os=ctx.createOscillator();
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.2,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.8);os.frequency.value=f;os.connect(g);g.connect(ctx.destination);os.start(t);os.stop(t+.85)}catch(er){}
+  $('[data-o]',b).textContent='mtof('+m+') = 440 * 2^(('+m+' - 69) / 12) = '+f.toFixed(2)+' Hz'})}};
+/* 9. skin */
+DEMOS.skin={t:'Ganti tema pakai data-skin',h:`<div class="ctl" data-b></div><div class="stage" data-st><div data-c style="border:3px solid var(--l);background:var(--p);color:var(--i);border-radius:16px;padding:14px"><b>Kebun Murojaah</b><p style="margin:4px 0 0">Semua warna di kartu ini datang dari variabel. Atribut di bawah yang mengganti isinya.</p></div></div><pre class="codeout" data-o></pre>`,
+i(b){const SK={klasik:['#fde7ef','#6d65c8','#3b3585'],lavender:['#e3dbfc','#6d65c8','#3b3585'],hutan:['#d7efd9','#2f7a4d','#1f4a33'],senja:['#ffe0c7','#c2562b','#5e2a17'],samudra:['#cfe9fa','#1f6fa8','#0f3a5c']};
+ const bx=$('[data-b]',b),c=$('[data-c]',b),o=$('[data-o]',b);bx.innerHTML=Object.keys(SK).map(k=>'<button class="btn s" data-k="'+k+'">'+k+'</button>').join('');
+ const set=k=>{const v=SK[k];c.style.setProperty('--p',v[0]);c.style.setProperty('--l',v[1]);c.style.setProperty('--i',v[2]);o.textContent='<html data-skin="'+k+'">\n[data-skin="'+k+'"]{ --paper:'+v[0]+'; --line:'+v[1]+'; --ink:'+v[2]+' }'};
+ bx.addEventListener('click',e=>{const x=e.target.closest('[data-k]');if(x)set(x.dataset.k)});set('klasik')}};
+/* 10. normalisasi arab */
+DEMOS.norm={t:'Normalisasi teks Arab (cari ayat)',h:`<div class="ctl"><label>Ketik / tempel teks Arab <input type="text" data-i dir="rtl" lang="ar" size="26" value="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ" style="font-size:1.2rem"></label></div><pre class="codeout" data-o dir="auto"></pre>`,
+i(b){const STRIP=/[ؐ-ًؚ-ٰٟۖ-ۭـ]/g;const arNorm=s=>String(s).replace(STRIP,'').replace(/[آأإٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ').trim();
+ const f=()=>{const v=$('[data-i]',b).value;$('[data-o]',b).textContent='sebelum : '+v+'  ('+v.length+' karakter)\nsesudah : '+arNorm(v)+'  ('+arNorm(v).length+' karakter)\n\nHarakat dibuang, alif disatukan → pencarian "بسم" tetap ketemu.'};b.addEventListener('input',f);f()}};
+/* 11. koin */
+DEMOS.earn={t:'Koin dengan batas harian (earn)',h:`<div class="ctl"><button class="btn s p" data-e="5">+5 koin (capped)</button><button class="btn s" data-e="30">+30 koin (capped)</button><button class="btn s g" data-r>reset hari</button></div><div class="logbox" data-log style="min-height:70px"></div><b data-t></b>`,
+i(b){let coins=0,today=0;const CAP=40,log=$('[data-log]',b),tt=$('[data-t]',b);const f=()=>tt.textContent='Koin: '+coins+' · Terpakai batas hari ini: '+today+'/'+CAP;
+ b.addEventListener('click',e=>{const x=e.target.closest('[data-e]');if(x){let n=+x.dataset.e;n=Math.min(n,Math.max(0,CAP-today));today+=n;coins+=n;log.textContent=(n>0?'+'+n+' koin masuk':'Batas harian habis, tidak ada koin')+'\n'+log.textContent;f()}if(e.target.closest('[data-r]')){today=0;log.textContent='hari baru!\n'+log.textContent;f()}});f()}};
+/* 12. game loop */
+DEMOS.loop={t:'Game loop (bola memantul)',h:`<div class="ctl"><button class="btn s p" data-t>Mulai / Jeda</button><label>Kecepatan <input type="range" min="1" max="8" value="3" data-v></label></div><canvas data-c width="360" height="120" style="max-width:100%;border:2.5px dashed var(--lav2);border-radius:12px;background:var(--frame)"></canvas><pre class="codeout">function loop(){ update(); draw(); raf = requestAnimationFrame(loop) }</pre>`,
+i(b){const cv=$('[data-c]',b),g=cv.getContext('2d');let x=30,dx=1,raf=0,run=false;const draw=()=>{g.clearRect(0,0,360,120);g.fillStyle='#e07fb5';g.beginPath();g.arc(x,60,16,0,7);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(x-5,54,4,0,7);g.fill()};
+ const loop=()=>{x+=dx*$('[data-v]',b).value;if(x>344||x<16)dx*=-1;draw();if(run)raf=requestAnimationFrame(loop)};draw();
+ $('[data-t]',b).onclick=()=>{run=!run;if(run)loop();else cancelAnimationFrame(raf)};
+ new MutationObserver(()=>{if(!b.isConnected){run=false;cancelAnimationFrame(raf)}}).observe(document.body,{childList:true,subtree:true})}};
+/* 13. timer */
+DEMOS.timer={t:'Timer yang tidak bohong',h:`<div class="ctl"><button class="btn s p" data-t>Mulai / Jeda</button><button class="btn s" data-r>Reset</button></div><div class="stage" style="font-family:var(--f-mono);font-size:2rem;text-align:center;min-height:0" data-f>00:00.0</div><pre class="codeout">elapsed = acc + (running ? Date.now() - start : 0)</pre>`,
+i(b){let acc=0,start=0,run=false,h;const f=()=>{const e=acc+(run?Date.now()-start:0),s=e/1000;$('[data-f]',b).textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+(s%60).toFixed(1).padStart(4,'0')};
+ const tick=()=>{f();if(run&&b.isConnected)h=setTimeout(tick,100)};
+ $('[data-t]',b).onclick=()=>{if(run){acc+=Date.now()-start;run=false;clearTimeout(h);f()}else{start=Date.now();run=true;tick()}};
+ $('[data-r]',b).onclick=()=>{acc=0;run=false;clearTimeout(h);f()}}};
+/* 14. DOM mini */
+DEMOS.dom={t:'Satu kalimat, banyak kartu (render dari data)',h:`<div class="ctl"><label>Tambah target <input type="text" data-i value="Murojaah Al-Mulk" size="16"></label><button class="btn s p" data-a2>Tambah</button></div><div class="stage" data-st></div><pre class="codeout" data-o></pre>`,
+i(b){const L=[{t:'Baca 1 halaman',ok:true}],st=$('[data-st]',b),o=$('[data-o]',b);const e=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const f=()=>{st.innerHTML=L.map((x,i)=>'<label style="display:flex;gap:8px;margin:0 0 6px;align-items:center"><input type="checkbox" data-i="'+i+'" '+(x.ok?'checked':'')+'> '+e(x.t)+'</label>').join('');o.textContent='const L = '+JSON.stringify(L,null,1).replace(/\n\s*/g,' ')+'\nst.innerHTML = L.map(x => "<label>"+esc(x.t)+"</label>").join("")'};
+ b.addEventListener('change',e=>{if(e.target.dataset.i!=null){L[+e.target.dataset.i].ok=e.target.checked;f()}});
+ $('[data-a2]',b).onclick=()=>{const v=$('[data-i]',b).value.trim();if(v){L.push({t:v,ok:false});f()}};f()}};
+
+"use strict";
+const BOOK={};
+const hasTag=(d,s)=>!!d.querySelector(s);
+BOOK.html={name:'HTML: kerangka web',desc:'Tulang badan sebuah halaman. Mulai dari nol, tanpa takut.',ch:[
+{id:'html1',t:'Apa itu HTML?',say:'HTML itu seperti **kerangka rumah**. Belum ada cat dan lampu, tapi sudah jelas mana pintu, mana jendela.'.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>'),blocks:[
+ P_('HTML (HyperText Markup Language) bukan bahasa pemrograman. Dia bahasa <b>penanda</b>: kita memberi tahu browser "bagian ini judul", "bagian ini paragraf", "bagian ini tombol". Browser lalu menampilkannya.'),
+ P_('Penandanya disebut <b>tag</b>. Kebanyakan tag berpasangan: ada pembuka [[<p>]] dan penutup [[</p>]]. Yang di tengah adalah isinya.'),
+ A_('halaman-pertama.html','html',[
+  ['<!doctype html>','Browser zaman dulu punya banyak "mode" yang beda-beda tampilannya.','Memberi tahu browser: "ini HTML modern, pakai aturan standar".','Supaya tampilan sama di semua browser. Wajib jadi baris pertama.'],
+  ['<html lang="id">','Semua isi halaman harus dibungkus satu tag induk.','[[<html>]] adalah akar dari seluruh halaman. [[lang="id"]] menandai bahasanya Indonesia.','Mesin pembaca layar dan Google jadi tahu cara melafalkan dan mengelompokkan halamanmu.'],
+  ['<head>','Ada hal yang perlu dibaca browser tapi tidak ditampilkan di layar.','[[<head>]] adalah ruang "belakang panggung": judul tab, huruf, pengaturan.','Memisahkan pengaturan dari isi yang dilihat orang.'],
+  ['  <meta charset="utf-8">','Komputer menyimpan huruf sebagai angka, dan ada banyak tabel angka-huruf.','Memberi tahu browser memakai tabel UTF-8.','Supaya huruf seperti é, emoji, dan tulisan Arab tampil benar, bukan kotak-kotak aneh.'],
+  ['  <title>Halamanku</title>','Tab browser perlu nama.','Teks di dalam [[<title>]] muncul di tab dan di daftar bookmark.','Orang tahu ini halaman apa.'],
+  ['</head>','Tag yang dibuka harus ditutup.','Menandai akhir ruang belakang panggung.','Browser tahu mana isi head dan mana isi body.'],
+  ['<body>','Sekarang bagian yang dilihat orang.','[[<body>]] membungkus semua yang tampil di layar.','Tempat judul, teks, gambar, tombol.'],
+  ['  <h1>Halo dunia!</h1>','Halaman butuh judul utama.','[[<h1>]] adalah judul terbesar (h = heading, 1 = level tertinggi).','Penting untuk struktur dan SEO. Biasanya hanya satu [[h1]] per halaman.'],
+  ['  <p>Ini paragraf pertamaku.</p>','Teks biasa perlu pembungkus.','[[<p>]] = paragraf. Browser otomatis memberi jarak atas-bawah.','Memisahkan teks jadi paragraf yang enak dibaca.'],
+  ['</body>'],['</html>']]),
+ G_({code:'<h1>Halo dunia!</h1>\n<p>Ini paragraf pertamaku.</p>\n',goal:'ubah judul menjadi namamu, lalu tambahkan satu paragraf kedua.',check:(d)=>d.querySelectorAll('p').length>=2&&hasTag(d,'h1')&&d.querySelector('h1').textContent.trim().toLowerCase()!=='halo dunia!'}),
+ Z_('Tag mana yang BENAR untuk membuat paragraf?',['[[<paragraph>]]','[[<p>]]','[[<para/>]]','[[<text>]]'],1,'[[<p>]] adalah singkatan dari paragraph. Tag lain tidak ada di HTML.')]},
+{id:'html2',t:'Tag-tag yang paling sering dipakai',say:'Ada puluhan tag, tapi yang kepakai 90% cuma segini. Hafalkan pelan-pelan, ya!',blocks:[
+ T_(['Tag','Fungsi','Contoh'],[['[[<h1>…<h6>]]','Judul, dari besar ke kecil','[[<h2>Bab 2</h2>]]'],['[[<p>]]','Paragraf','[[<p>Halo</p>]]'],['[[<a href>]]','Tautan ke halaman lain','[[<a href="https://google.com">Cari</a>]]'],['[[<img>]]','Gambar (tidak perlu penutup)','[[<img src="a.png" alt="kucing">]]'],['[[<ul><li>]]','Daftar bertitik','[[<ul><li>Apel</li></ul>]]'],['[[<button>]]','Tombol','[[<button>Klik</button>]]'],['[[<input>]]','Kotak isian','[[<input type="text">]]'],['[[<div>]]','Kotak pembungkus umum','[[<div>…</div>]]'],['[[<span>]]','Pembungkus teks sebaris','[[<span>kata</span>]]']]),
+ N_('tip','Atribut','Tag bisa punya <b>atribut</b>, yaitu tambahan info di tag pembuka: [[href]], [[src]], [[alt]], [[class]], [[id]]. Bentuknya [[nama="nilai"]].'.split('|')),
+ G_({code:'<h2>Daftar belanja</h2>\n<ul>\n  <li>Apel</li>\n</ul>\n',goal:'tambahkan minimal 3 item [[<li>]] lagi, dan satu tautan [[<a href="https://claude.ai">]].',check:(d)=>d.querySelectorAll('li').length>=4&&hasTag(d,'a[href]')}),
+ Z_('Atribut [[alt]] pada [[<img>]] fungsinya apa?',['Mengatur lebar gambar','Teks pengganti jika gambar gagal muncul, dan dibaca pembaca layar','Mengganti nama file','Memberi bingkai'],1,'[[alt]] = teks alternatif. Penting untuk aksesibilitas dan saat internet lemot.')]},
+{id:'html3',t:'Struktur & aksesibilitas',say:'Web yang baik bisa dipakai semua orang, termasuk yang pakai pembaca layar. Yuk biasakan dari awal.',blocks:[
+ P_('Daripada [[<div>]] di mana-mana, HTML punya tag <b>semantik</b> yang namanya memberi tahu perannya:'),
+ U_('[[<header>]] bagian kepala halaman','[[<nav>]] kumpulan menu','[[<main>]] isi utama (hanya satu)','[[<section>]] bagian bertema','[[<footer>]] kaki halaman'),
+ A_('struktur.html','html',[
+  ['<header>','Judul dan logo biasanya di bagian atas.','Tag semantik untuk kepala halaman.','Pembaca layar bisa langsung lompat ke sini.'],
+  ['  <h1>Kebun Murojaah</h1>'],
+  ['  <nav>','Menu butuh penanda sendiri.','[[<nav>]] menandai kumpulan tautan navigasi.','Pengguna keyboard dan pembaca layar menemukan menu dengan cepat.'],
+  ['    <button data-go="beranda">Beranda</button>','Tombol pindah halaman.','Atribut [[data-go]] adalah <b>atribut buatan sendiri</b> (diawali [[data-]]). Browser tidak peduli, tapi JavaScript bisa membacanya.','Inilah cara Kebun Murojaah tahu tombol mana membuka halaman mana. Nanti kita bedah!'],
+  ['  </nav>'],['</header>'],['<main id="main">'],['  <section id="p-beranda">…</section>','Tiap halaman aplikasi dibungkus section.','Satu section = satu "halaman" yang bisa disembunyikan atau ditampilkan.','Mudah dikelola oleh router JavaScript.'],['</main>']]),
+ Z_('Mana tag yang paling cocok untuk menu navigasi?',['[[<div>]]','[[<nav>]]','[[<span>]]','[[<menu-nav>]]'],1,'[[<nav>]] memang dibuat untuk menandai menu navigasi.')]}
+]};
+BOOK.css={name:'CSS: dandan webnya',desc:'Warna, ukuran, susunan. Bikin web yang gemes.',ch:[
+{id:'css1',t:'Selector & properti',say:'HTML itu rumahnya, CSS itu cat dan dekorasinya. Ayo dandani!',blocks:[
+ P_('Aturan CSS punya tiga bagian: <b>selector</b> (siapa yang didandani), <b>properti</b> (apa yang diubah), dan <b>nilai</b> (jadi apa).'),
+ A_('gaya.css','css',[
+  ['h1 {','Browser perlu tahu elemen mana yang dikenai gaya.','[[h1]] adalah <b>selector</b>: pilih semua elemen [[<h1>]].','Satu aturan bisa mendandani banyak elemen sekaligus.'],
+  ['  color: hotpink;','Warna teks.','[[color]] = properti, [[hotpink]] = nilai. Ada ratusan nama warna.','Memberi identitas visual.'],
+  ['  font-size: 2rem;','Ukuran huruf.','[[rem]] = kelipatan ukuran huruf dasar browser (biasanya 16px).','Lebih ramah pengguna dibanding px karena ikut pengaturan mereka.'],
+  ['}','Kurung kurawal menutup aturan.'],
+  ['.kartu {','Tanda titik berarti: pilih elemen ber-class "kartu".','[[.nama]] = selector class.','Bisa dipakai di banyak elemen dengan gaya yang sama.'],
+  ['  background: #fde7ef;','Warna latar.','[[#fde7ef]] = kode hex warna pink muda.','Warna presisi sesuai desain.'],
+  ['  border: 3px dashed #6d65c8;','Bingkai.','Ketebalan, gaya (dashed = putus-putus), warna.','Gaya "jahitan" seperti di tema Kebun Murojaah.'],
+  ['  border-radius: 20px;','Sudut kotak.','Membulatkan sudut.','Bikin tampilan lembut dan gemes.'],
+  ['}']]),
+ G_({code:'<style>\n  h1 { color: black; }\n  .kartu { padding: 10px; }\n</style>\n<h1>Halo!</h1>\n<div class="kartu">Aku kartu</div>\n',goal:'buat [[h1]] berwarna pink atau ungu (bukan hitam) dan beri kartu [[border-radius]].',check:(d)=>{const h=d.querySelector('h1'),k=d.querySelector('.kartu');return getComputedStyle(h).color!=='rgb(0, 0, 0)'&&parseFloat(getComputedStyle(k).borderTopLeftRadius)>0}}),
+ Z_('Selector [[.tombol]] memilih...',['elemen [[<tombol>]]','elemen ber-id tombol','elemen dengan [[class="tombol"]]','semua elemen'],2,'Titik berarti class. Tanda # berarti id.')]},
+{id:'css2',t:'Box model & Flexbox',say:'Semua elemen itu kotak. Paham kotak = paham setengah CSS!',blocks:[
+ P_('Setiap elemen adalah kotak berlapis: <b>content</b> (isi) → <b>padding</b> (jarak ke bingkai dalam) → <b>border</b> (bingkai) → <b>margin</b> (jarak ke tetangga).'),
+ C_('box.css','css','* { box-sizing: border-box; }\n.kotak {\n  width: 200px;\n  padding: 16px;\n  border: 3px solid;\n  margin: 12px;\n}'),
+ P_('[[box-sizing: border-box]] membuat lebar 200px sudah <b>termasuk</b> padding dan border. Tanpa ini, kotakmu bisa lebih lebar dari perkiraan. Kebun Murojaah memakainya di baris pertama CSS.'),
+ H_('Flexbox: menata kotak sejajar'),
+ P_('[[display:flex]] pada pembungkus membuat anak-anaknya berjajar. Coba ubah-ubah di bawah:'),
+ D_('flex'),
+ G_({code:'<style>\n .w{display:block;background:#eee;padding:8px}\n .w div{background:hotpink;color:#fff;padding:8px;margin:4px}\n</style>\n<div class="w"><div>1</div><div>2</div><div>3</div></div>\n',goal:'ubah [[.w]] jadi [[display:flex]] supaya 1 2 3 berjajar menyamping.',check:(d)=>getComputedStyle(d.querySelector('.w')).display==='flex'}),
+ Z_('Properti apa yang mengatur jarak ANTAR kotak anak di flexbox?',['[[gap]]','[[border]]','[[font-gap]]','[[box-sizing]]'],0,'[[gap]] memberi jarak antar anak flex/grid tanpa perlu margin.')]},
+{id:'css3',t:'Variabel CSS & mode gelap',say:'Ini rahasia di balik 19 tema Kebun Murojaah. Sekali paham, kamu bisa bikin tema sendiri!',blocks:[
+ P_('Variabel CSS dibuat dengan awalan [[--]] dan dipakai dengan [[var(--nama)]]. Ubah satu nilai, semua tempat yang memakainya ikut berubah.'),
+ A_('tema.css','css',[
+  [':root {','Variabel perlu "rumah" yang bisa diakses semua elemen.','[[:root]] = elemen paling atas ([[<html>]]).','Variabel yang dideklarasikan di sini berlaku di seluruh halaman.'],
+  ['  --page: #fde7ef;','Warna latar halaman dipakai di banyak tempat.','Membuat variabel bernama [[--page]].','Kalau mau ganti tema, cukup ganti satu baris ini.'],
+  ['  --ink: #3b3585;'],
+  ['}'],
+  ['body {'],
+  ['  background: var(--page);','Daripada menulis kode warna berulang-ulang.','[[var(--page)]] mengambil isi variabel.','Satu sumber kebenaran untuk warna.'],
+  ['  color: var(--ink);'],['}'],
+  ['@media (prefers-color-scheme: dark) {','HP/laptop bisa disetel mode gelap.','Aturan di dalamnya hanya aktif jika perangkat memakai mode gelap.','Web otomatis ikut selera pengguna.'],
+  ['  :root { --page: #1c1838; --ink: #efeaff; }','Cukup ganti nilai variabel, bukan menulis ulang semua aturan.','Redefinisi variabel untuk mode gelap.','Inilah kenapa kode tema rapi dan pendek.'],
+  ['}']]),
+ D_('vars'),
+ D_('skin'),
+ G_({code:'<style>\n :root{ --warna: gray; }\n .a{ background:var(--warna); color:#fff; padding:14px; border-radius:12px }\n</style>\n<div class="a">Kartuku</div>\n',goal:'ubah nilai [[--warna]] jadi pink (misalnya [[hotpink]]) tanpa menyentuh aturan [[.a]].',check:(d,l,c)=>/--warna\s*:\s*(?!gray)/.test(c)&&/var\(--warna\)/.test(c)}),
+ Z_('Bagaimana cara memakai variabel [[--ink]]?',['[[ink()]]','[[var(--ink)]]','[[$ink]]','[[--ink()]]'],1,'Dipanggil dengan [[var(--nama)]].')]}
+]};
+BOOK.js={name:'JavaScript: otak webnya',desc:'Bikin web bisa bergerak, menghitung, dan mengingat.',ch:[
+{id:'js1',t:'Variabel & tipe data',say:'JavaScript itu otaknya. HTML kerangka, CSS dandanan, JS yang bikin web hidup!',blocks:[
+ P_('Variabel adalah <b>kotak bernama</b> untuk menyimpan nilai. Pakai [[const]] kalau nilainya tidak akan diganti, [[let]] kalau akan berubah.'),
+ A_('dasar.js','js',[
+  ['const nama = "Aisyah";','Kita butuh menyimpan teks agar bisa dipakai lagi.','Membuat kotak [[nama]] berisi teks (string) "Aisyah". [[const]] = tidak boleh diisi ulang.','Kode jadi mudah dibaca dan tidak mengulang-ulang teks.'],
+  ['let koin = 10;','Koin akan bertambah.','[[let]] boleh diganti nilainya. 10 adalah angka (number).','Menyimpan data yang berubah.'],
+  ['koin = koin + 5;','Menambah koin.','Ambil isi [[koin]], tambah 5, simpan lagi. Boleh ditulis [[koin += 5]].','Inilah cara "menambah poin" di semua game.'],
+  ['const sudahBaca = true;','Kadang jawabannya cuma ya/tidak.','Nilai boolean: [[true]] atau [[false]].','Dipakai untuk kondisi (if).'],
+  ['console.log(nama, koin);','Kita ingin mengintip isi variabel.','Menulis ke "konsol" (jendela pengintip developer).','Alat debug paling sering dipakai.']]),
+ G_({js:1,code:'const nama = "Aisyah";\nlet koin = 10;\nkoin = koin + 5;\nconsole.log(nama + " punya " + koin + " koin");\n',goal:'ubah supaya koin menjadi 100 (kamu boleh ubah angka mana pun), dan cetak "koin: 100".',check:(d,l)=>l.some(x=>/100/.test(x))}),
+ Z_('Kapan pakai [[const]]?',['Saat nilai akan sering berubah','Saat nilai tidak akan diisi ulang','Hanya untuk angka','Tidak pernah'],1,'[[const]] mengunci pengisian ulang. Biasakan pakai [[const]] dulu, ganti ke [[let]] hanya jika perlu.')]},
+{id:'js2',t:'Fungsi, kondisi & perulangan',say:'Tiga jurus utama: ulangi, putuskan, bungkus. Dengan ini kamu bisa bikin hampir apa saja.',blocks:[
+ A_('logika.js','js',[
+  ['function sapa(nama) {','Kode yang dipakai berulang sebaiknya dibungkus.','Membuat <b>fungsi</b> bernama [[sapa]] dengan satu input ([[nama]]).','Tulis sekali, pakai berkali-kali.'],
+  ['  return "Halo " + nama;','Fungsi perlu mengembalikan hasil.','[[return]] mengirim hasil keluar dan menghentikan fungsi.','Hasilnya bisa disimpan atau dipakai lagi.'],
+  ['}'],
+  ['for (let i = 1; i <= 3; i++) {','Mau mengulang 3 kali tanpa menulis 3 kali.','Mulai [[i=1]]; selama [[i <= 3]] jalankan; tiap putaran [[i++]] (tambah 1).','Kunci mengolah banyak data: 114 surah, 6236 ayat.'],
+  ['  console.log(i, sapa("Aisyah"));'],['}'],
+  ['const hari = 5;'],
+  ['if (hari >= 7) {','Program perlu mengambil keputusan.','Jika kondisi benar, jalankan blok ini.','Misal: kalau streak 7 hari, beri lencana.'],
+  ['  console.log("Seminggu! 🎉");'],
+  ['} else {','Kalau kondisi salah.'],
+  ['  console.log("Semangat, tinggal " + (7 - hari) + " hari");'],['}']]),
+ G_({js:1,code:'function kali(a, b) {\n  return a * b;\n}\nconsole.log(kali(3, 4));\n',goal:'buat fungsi [[tambah(a,b)]] dan cetak hasil [[tambah(7,8)]] = 15.',check:(d,l,c)=>/function\s+tambah|tambah\s*=/.test(c)&&l.some(x=>x.trim()==='15')}),
+ Z_('Berapa kali loop ini berjalan? [[for(let i=0;i<5;i++)]]',['4','5','6','Tak terhingga'],1,'i bernilai 0,1,2,3,4 → 5 kali. Berhenti saat i = 5 karena kondisi [[i<5]] salah.')]},
+{id:'js3',t:'Array & objek',say:'Array itu rak berlaci nomor, objek itu lemari berlabel nama. Data Kebun Murojaah semuanya begini!',blocks:[
+ A_('data.js','js',[
+  ['const surah = ["Al-Fatihah", "Al-Baqarah", "Ali Imran"];','Butuh menyimpan banyak data sejenis.','<b>Array</b>: daftar berurutan, dimulai dari nomor 0.','[[surah[0]]] = "Al-Fatihah". Cocok untuk daftar.'],
+  ['surah.push("An-Nisa");','Menambah data baru.','[[push]] menambah ke ujung array.','Seperti menambah riwayat sesi murojaah.'],
+  ['const sesi = { surah: "Al-Mulk", menit: 12, selesai: true };','Satu sesi punya banyak sifat berbeda.','<b>Objek</b>: pasangan nama:nilai.','Diakses dengan [[sesi.menit]]. State Kebun Murojaah [[S]] adalah satu objek besar.'],
+  ['const total = [5, 10, 7].reduce((a, b) => a + b, 0);','Mau menjumlahkan semua isi array.','[[reduce]] mengumpulkan isi array jadi satu nilai. [[(a,b)=>a+b]] adalah fungsi panah.','Dipakai untuk total menit murojaah.'],
+  ['const panjang = surah.filter(s => s.length > 8);','Mau memilih sebagian saja.','[[filter]] menyaring yang cocok kondisi.','Dipakai untuk riwayat per juz.']]),
+ G_({js:1,code:'const nilai = [70, 85, 90, 60];\nconst lulus = nilai.filter(n => n >= 75);\nconsole.log(lulus);\n',goal:'hitung rata-rata [[nilai]] dan cetak hasilnya (hasil harus 76.25).',check:(d,l)=>l.some(x=>x.includes('76.25'))}),
+ Z_('[[const a=["x","y","z"]]] → [[a[1]]] adalah...',['"x"','"y"','"z"','undefined'],1,'Penomoran array mulai dari 0: a[0]="x", a[1]="y".')]},
+{id:'js4',t:'DOM & event: bikin web bereaksi',say:'Sekarang bagian serunya: klik tombol, halaman berubah. Ini jantung Kebun Murojaah.',blocks:[
+ P_('<b>DOM</b> adalah "pohon" semua elemen HTML yang bisa dibaca dan diubah oleh JavaScript. <b>Event</b> adalah kejadian seperti klik, ketik, atau halaman selesai dimuat.'),
+ A_('klik.js','js',[
+  ['const tombol = document.querySelector("#tombol");','Kita perlu "memegang" elemen sebelum mengubahnya.','Mencari elemen pertama yang cocok selector CSS [[#tombol]].','Hasilnya disimpan untuk dipakai lagi.'],
+  ['const teks = document.querySelector("#teks");'],
+  ['let n = 0;'],
+  ['tombol.addEventListener("click", () => {','Browser perlu tahu apa yang dilakukan saat tombol diklik.','Pasang "telinga": saat [[click]] terjadi, jalankan fungsi di dalamnya.','Interaksi pengguna.'],
+  ['  n++;'],
+  ['  teks.textContent = "Kamu klik " + n + " kali";','Menampilkan hasil.','[[textContent]] mengganti isi teks elemen.','Layar berubah tanpa memuat ulang halaman.'],
+  ['});']]),
+ G_({code:'<button id="b">Klik aku</button>\n<p id="t">Belum ada klik</p>\n<script>\n  let n = 0;\n  // tulis kodemu di sini\n<\/script>\n',goal:'saat tombol diklik, isi paragraf [[#t]] jadi jumlah klik. (Klik tombolnya dulu setelah menekan Jalankan, lalu tekan Jalankan lagi untuk memeriksa. Kode harus berisi addEventListener dan textContent.)',check:(d,l,c)=>/addEventListener/.test(c)&&/textContent|innerHTML/.test(c)}),
+ D_('dom'),
+ D_('deleg'),
+ Z_('Fungsi [[addEventListener("click", fn)]] artinya...',['Jalankan fn sekarang juga','Jalankan fn setiap kali elemen diklik','Hapus elemen','Ubah warna elemen'],1,'Itu mendaftarkan fungsi untuk dijalankan ketika event terjadi.')]},
+{id:'js5',t:'Menyimpan data & waktu',say:'Biar web-mu ingat kamu walau browser ditutup. Itulah cara streak-mu tersimpan.',blocks:[
+ P_('[[localStorage]] adalah laci kecil di browser untuk menyimpan teks. Karena hanya teks, objek diubah dulu dengan [[JSON.stringify]] dan dikembalikan dengan [[JSON.parse]].'),
+ D_('store'),
+ H_('Tanggal & streak'),
+ P_('Kebun Murojaah menyimpan tanggal sebagai teks "2026-11-05". Streak dihitung dengan mundur satu hari demi satu hari selama tanggal itu ada di catatan:'),
+ D_('streak'),
+ D_('timer'),
+ Z_('Kenapa objek diubah jadi teks sebelum masuk [[localStorage]]?',['Biar hemat memori','Karena localStorage hanya bisa menyimpan teks (string)','Karena JSON lebih cepat','Biar dienkripsi'],1,'localStorage hanya menerima string. [[JSON.stringify]] mengubah objek jadi string, [[JSON.parse]] membaliknya.')]}
+]};
+BOOK.lain={name:'Bahasa lain & alat',desc:'Python, logika, Git, DevTools, Firebase. Pelengkap supaya kamu makin jago.',ch:[
+{id:'ln1',t:'Logika & algoritma',say:'Bahasa boleh ganti-ganti, tapi cara berpikirnya sama. Ini yang paling berharga!',blocks:[
+ P_('<b>Algoritma</b> = langkah berurutan untuk menyelesaikan masalah. Contoh: "hitung streak".'),
+ U_('Mulai dari hari ini (atau kemarin kalau hari ini belum)','Selama hari itu ada di catatan: tambah 1, mundur sehari','Berhenti saat ketemu hari kosong','Hasilnya adalah streak'),
+ P_('Menulis langkah dalam bahasa manusia dulu (disebut <b>pseudocode</b>) sebelum ngoding membuat masalah rumit jadi kecil-kecil.'),
+ H_('Tiga pertanyaan sebelum ngoding'),
+ U_('Inputnya apa? (tanggal-tanggal sesi)','Outputnya apa? (angka streak)','Aturan khususnya apa? (hari ini boleh belum dikerjakan)'),
+ D_('streak'),
+ Z_('Apa yang sebaiknya dilakukan PERTAMA saat menghadapi masalah besar?',['Langsung ngetik kode','Memecahnya jadi langkah-langkah kecil','Menyalin dari internet','Menyerah'],1,'Memecah masalah adalah inti berpikir komputasional.')]},
+{id:'ln2',t:'Python (intip sebentar)',say:'Python itu bahasa yang kelihatan seperti bahasa Inggris. Cocok untuk pemula dan data.',blocks:[
+ N_('warn','Catatan','Web ini tidak bisa menjalankan Python langsung, jadi bab ini hanya dibaca. Untuk mencoba, pasang Python dari python.org atau pakai Google Colab.'.split('|')),
+ T_(['Konsep','JavaScript','Python'],[['Variabel','[[let koin = 10;]]','[[koin = 10]]'],['Cetak','[[console.log(koin)]]','[[print(koin)]]'],['Kondisi','[[if (a > 5) { … }]]','[[if a > 5:]]'],['Fungsi','[[function f(x){ return x*2 }]]','[[def f(x): return x*2]]'],['Perulangan','[[for (let i=0;i<3;i++)]]','[[for i in range(3):]]'],['Array','[[[1,2,3]]]','[[[1,2,3]]] (disebut list)']]),
+ A_('streak.py','js',[
+  ['def streak(hari):','[[def]] membuat fungsi. Di Python, blok ditandai <b>indentasi</b> (spasi), bukan kurung kurawal.','Menerima daftar hari yang sudah dikerjakan.','Logika yang sama dengan [[streakInfo()]] di Kebun Murojaah.'],
+  ['    n = 0'],['    h = max(hari)','Mulai dari hari terbaru.'],['    while h in hari:','Selama hari itu ada di catatan.'],['        n += 1'],['        h -= 1','Mundur satu hari.'],['    return n']]),
+ Z_('Python menandai isi blok (misal isi fungsi) dengan...',['Kurung kurawal { }','Indentasi (spasi di awal baris)','Titik koma ;','Tag HTML'],1,'Indentasi adalah bagian dari tata bahasa Python.')]},
+{id:'ln3',t:'Git & GitHub Pages',say:'Ini cara web-mu bisa dibuka siapa saja lewat link. Kamu sudah mengalaminya sendiri!',blocks:[
+ P_('<b>Git</b> adalah mesin waktu untuk kode: mencatat setiap perubahan. <b>GitHub</b> adalah tempat menyimpannya di internet. <b>GitHub Pages</b> menyajikan file HTML-mu sebagai website gratis.'),
+ T_(['Perintah','Artinya'],[['[[git init]]','Mulai mencatat folder ini'],['[[git add .]]','Siapkan semua perubahan'],['[[git commit -m "pesan"]]','Simpan catatan perubahan'],['[[git push]]','Kirim ke GitHub']]),
+ H_('Alur deploy Kebun Murojaah'),
+ U_('Upload <b>index.html</b> ke repo (GitHub wajib nama ini untuk halaman utama)','Aktifkan Pages: Settings → Pages → Deploy from branch → main','Tunggu 1-2 menit lalu buka linknya','Upload file dengan nama sama = menimpa versi lama'),
+ N_('tip','Kenapa nama harus index.html?','Server web otomatis memberikan file bernama [[index.html]] jika alamatnya hanya folder. Jadi [[…github.io/kebunmurajaah/]] = membuka [[index.html]] di dalamnya.'.split('|')),
+ Z_('Kenapa file utama diberi nama [[index.html]]?',['Aturan Windows','Server otomatis menyajikannya saat alamat tanpa nama file','Supaya dienkripsi','Tidak ada alasan'],1,'Itu konvensi server web.')]},
+{id:'ln4',t:'DevTools: mengintip dapur browser',say:'Tekan F12 di laptop. Di sana kamu bisa lihat semua kode web mana pun. Tidak merusak apa-apa kok!',blocks:[
+ T_(['Tab','Gunanya'],[['Elements','Melihat dan mengubah HTML & CSS secara langsung'],['Console','Melihat pesan [[console.log]] dan error'],['Network','Melihat file apa saja yang diunduh'],['Application','Melihat isi localStorage (data streak-mu!)']]),
+ U_('Klik kanan elemen → Inspect: lihat CSS yang berlaku','Di Console, ketik [[document.title]] lalu Enter','Di Application → Local Storage: lihat kunci [[kebun-murojaah-v1]]'),
+ N_('tip','Kapan error?','Teks merah di Console adalah sahabat. Bacalah dari atas: nama error dan nomor baris menunjukkan sumber masalah.'.split('|')),
+ Z_('Tab mana untuk melihat isi localStorage?',['Elements','Network','Application','Sources'],2,'Application → Storage → Local Storage.')]},
+{id:'ln5',t:'Firebase: simpan data di awan',say:'localStorage hanya di satu HP. Firebase membuat datamu ikut ke mana pun kamu login.',blocks:[
+ P_('<b>Firebase</b> adalah layanan Google: ada <b>Authentication</b> (login) dan <b>Firestore</b> (database awan). Web-mu hanya perlu file konfigurasi, tanpa membuat server sendiri.'),
+ T_(['Istilah','Arti'],[['Collection','Seperti folder (contoh: users)'],['Document','Seperti file di dalamnya (contoh: users/abc123)'],['Rules','Aturan siapa boleh baca/tulis'],['uid','ID unik tiap pengguna']]),
+ N_('warn','Penting soal keamanan','Isi [[firebase-config.js]] memang bisa dilihat siapa pun. Yang melindungi datamu adalah <b>Rules</b> di Firestore, bukan menyembunyikan file. Jangan pernah percaya pembatasan yang hanya ada di tampilan web.'.split('|')),
+ Z_('Yang BENAR-BENAR melindungi data Firestore adalah...',['Menyembunyikan tombol admin','Firestore Rules','Menamai file dengan sulit','Kode JavaScript di web'],1,'Kode di sisi pengguna bisa diubah siapa saja. Rules dijalankan di server Google.')]}
+]};
+
+"use strict";
+BOOK.bedah={name:'Bedah Kebun Murojaah',desc:'Kode web aslimu, dibaca dari baris pertama. Kenapa, fungsinya, tujuannya.',ch:[
+{id:'bd1',t:'Peta proyek',say:'Sebelum membedah, kenali dulu isi perutnya. Seperti lihat denah rumah sebelum masuk kamar.',blocks:[
+ P_('Kebun Murojaah itu <b>satu halaman web</b> yang isinya dibuat dari banyak potongan file, lalu digabung jadi satu file bernama [[index.html]]. Penggabungnya adalah skrip [[build.py]].'),
+ T_(['File / potongan','Isinya','Contoh'],[['[[index.html]]','Hasil gabungan: yang di-upload ke GitHub','Seluruh web'],['[[firebase-config.js]]','Kunci sambungan ke Firebase (boleh kosong)','Mode online'],['[[sw.js]]','Service worker: bikin web bisa dibuka tanpa internet','PWA'],['[[part1.css … part9.css]]','Potongan gaya: variabel, tema, kartu, halaman','Warna, bingkai'],['[[part2.html]]','Kerangka HTML: layar login, header, menu, halaman','Struktur'],['[[js1.js … js21.js]]','Potongan logika: util, state, router, timer, game, tema, admin','Otak']]),
+ N_('tip','Kenapa dipotong-potong?','Satu file 10.000 baris sulit dicari. Dipotong per topik, lalu digabung otomatis. Saat upload, yang dibutuhkan tetap hanya satu file [[index.html]].'.split('|')),
+ P_('Urutan penggabungan penting! [[js1]] (alat dasar) harus ada sebelum [[js3]] (router) yang memakainya. Itu sebabnya urutannya ditulis eksplisit di [[build.py]].'),
+ Z_('Kenapa [[js1.js]] harus dimuat paling awal?',['Karena ukurannya kecil','Karena berisi alat dasar yang dipakai potongan lain','Karena abjad','Tidak ada alasan'],1,'Fungsi dasar seperti [[$]], [[esc]], [[today]] dipakai file lain, jadi harus didefinisikan dulu.')]},
+{id:'bd2',t:'index.html: baris 1 sampai 9',say:'Inilah yang kamu minta: baris pertama. Kenapa begitu, fungsinya, tujuannya. Ayo ketuk satu-satu!',blocks:[
+ P_('Ini kepala file [[index.html]] Kebun Murojaah yang asli. Setiap baris ada alasannya.'),
+ A_('index.html (baris 1-9)','html',[
+  ['<!doctype html>','Tanpa ini, browser masuk "quirks mode": meniru perilaku browser tahun 1990-an yang tampilannya aneh.','Mendeklarasikan jenis dokumen: HTML modern (HTML5).','Agar tampilan konsisten di semua browser. Selalu baris pertama.'],
+  ['<html lang="id">','Semua tag harus ada dalam satu akar.','Pembuka akar dokumen. [[lang="id"]] = isinya berbahasa Indonesia.','Pembaca layar membaca dengan logat Indonesia, browser menawarkan terjemahan dengan benar.'],
+  ['<head>','Perlu tempat info untuk browser yang tidak ditampilkan.','Pembuka kepala dokumen.','Memuat pengaturan, judul, font, dan CSS.'],
+  ['<meta charset="utf-8">','Teks Arab Al-Qur\'an dan emoji butuh tabel huruf yang lengkap.','Menyatakan huruf memakai UTF-8, tabel yang memuat hampir semua huruf dunia.','Tanpa ini, ayat Arab bisa tampil sebagai simbol rusak. Letakkan di awal head.'],
+  ['<meta name="viewport" content="width=device-width,initial-scale=1">','HP punya layar kecil tapi browser HP awalnya pura-pura lebarnya 980px lalu mengecilkan semuanya.','Menyuruh browser memakai lebar layar asli, zoom awal 1x.','Web tampil proporsional di HP. Tanpa ini semua tulisan kecil sekali.'],
+  ['<title>Kebun Murojaah</title>','Setiap halaman perlu nama.','Isinya muncul di tab dan saat web ditambahkan ke layar utama.','Identitas dan kemudahan dikenali.'],
+  ['<link rel="preconnect" href="https://fonts.googleapis.com">','Font Mali/Fredoka/Scheherazade diunduh dari server Google.','"Pemanasan" sambungan ke server font lebih awal.','Font muncul lebih cepat, tidak berkedip.'],
+  ['<link href="https://fonts.googleapis.com/css2?family=Mali…" rel="stylesheet">','Tema gemes butuh huruf yang bukan bawaan perangkat.','Mengambil file CSS font dari Google Fonts.','Tampilan huruf sama di semua perangkat.'],
+  ['<style>','CSS perlu ditaruh di suatu tempat.','Pembuka blok CSS langsung di dalam HTML.','Semua gaya ikut dalam satu file, jadi cukup upload satu file.']]),
+ N_('tip','Kenapa ada &lt;/head&gt; dan &lt;body&gt; setelahnya?','Setelah [[<style>…</style>]] ditutup, [[</head>]] menutup kepala, lalu [[<body>]] dibuka. Di dalam body ada layar login dan aplikasinya.'.split('|')),
+ Z_('Apa yang terjadi jika [[<meta charset="utf-8">]] dihapus?',['Tidak ada apa-apa','Huruf Arab/emoji bisa tampil rusak','Web tidak bisa dibuka','Warna berubah'],1,'Browser bisa menebak tabel huruf yang salah.')]},
+{id:'bd3',t:'CSS: variabel, body, mode gelap',say:'Di sinilah 19 tema berasal dari: satu set variabel yang bisa ditukar-tukar.',blocks:[
+ A_('CSS bagian awal','css',[
+  [':root{','Warna dipakai ratusan kali.','Rumah variabel, berlaku di seluruh halaman.','Ganti warna di satu tempat, semua berubah.'],
+  ['  --page:#fde7ef;  --dot:#fff6f9;  --frame:#dff0f9;','Tiap bagian punya warna: latar, bintik, bingkai.','Mendefinisikan palet pastel.','Itu yang bikin tampilannya gemes dan konsisten.'],
+  ['  --font-body:"Mali","Nunito","Segoe UI",system-ui,sans-serif;','Kalau font pertama gagal diunduh, harus ada cadangan.','Daftar font berurutan: coba Mali, kalau tidak ada Nunito, dst.','Teks tetap terbaca meski internet lambat.'],
+  ['}'],
+  ['@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){','Banyak orang memakai mode gelap.','Aktif saat perangkat dalam mode gelap, kecuali pengguna memilih terang manual.','Menghormati pilihan pengguna dua arah: otomatis atau manual.'],
+  ['  --page:#1c1838; color-scheme:dark','Isi variabel diganti dengan versi gelap.','[[color-scheme:dark]] membuat tombol & scrollbar bawaan ikut gelap.','Tanpa ini, input putih silau di latar gelap.'],
+  ['}}'],
+  ['*{box-sizing:border-box}','Hitungan lebar default bikin kotak membengkak karena padding.','Semua elemen: lebar sudah termasuk padding+border.','Layout bisa diprediksi.'],
+  ['[hidden]{display:none!important}','Atribut [[hidden]] bisa kalah oleh [[display:flex]].','Memaksa elemen [[hidden]] benar-benar hilang.','Layar login/aplikasi bisa disembunyikan dengan andal: [[el.hidden = true]].'],
+  ['body{','Ini kanvas seluruh halaman.'],
+  ['  margin:0; font-family:var(--font-body); font-size:15px; line-height:1.55;','Browser memberi margin 8px bawaan, dan baris rapat membuat lelah baca.','Hilangkan margin, atur huruf, jarak antarbaris 1,55x.','Nyaman dibaca.'],
+  ['  background-color:var(--page);','Latar harus punya warna.','Pakai variabel [[--page]].','Ikut berubah saat tema diganti.'],
+  ['  background-image:radial-gradient(var(--dot) 2.5px, transparent 3px);','Latar polos membosankan.','Membuat bintik-bintik dengan gradien radial.','Tekstur polkadot tanpa file gambar sama sekali.'],
+  ['  padding-left:max(16px, env(safe-area-inset-left,0px));','HP berponi/lengkung menutupi pinggir layar.','Ambil yang lebih besar: 16px atau area aman perangkat.','Konten tidak tertutup notch.'],
+  ['}']]),
+ Z_('Kenapa kode mode gelap cukup mengganti nilai variabel?',['Karena CSS otomatis tahu','Karena semua komponen memakai [[var(--…)]], jadi ikut berubah','Karena JavaScript yang mengganti','Karena dark mode tidak butuh warna'],1,'Komponen tidak menulis warna langsung; mereka mengambil dari variabel.'),
+ D_('vars')]},
+{id:'bd4',t:'HTML body: dua layar & bingkai',say:'Dua layar utama: login dan aplikasi. Hanya satu tampil dalam satu waktu. Rahasianya: atribut hidden.',blocks:[
+ A_('Struktur body (disederhanakan)','html',[
+  ['<svg style="display:none">…</svg>','Ikon dipakai berulang di banyak tempat.','Kumpulan [[<symbol>]] (ikon) yang tidak tampil, dipanggil dengan [[<use href="#i-star">]].','Ikon ditulis sekali, dipakai di mana saja.'],
+  ['<div id="authScreen" hidden>','Pengguna harus login dulu (atau lanjut sebagai tamu).','Layar login, awalnya tersembunyi ([[hidden]]).','JavaScript yang memutuskan layar mana yang ditampilkan.'],
+  ['  <div class="frame">','Dekorasi bingkai rumah-rumahan.','Pembungkus yang menampilkan bingkai dan atap bergaris ([[.awning]]).','Identitas visual Kebun Murojaah.'],
+  ['<div id="app" hidden>','Layar utama aplikasi.','Dibuka setelah login berhasil.','Memisahkan dunia login dan dunia aplikasi.'],
+  ['  <header class="top">','Kepala berisi status, koin, judul, tombol.','Header dengan pil status streak 🔥, koin 🪙, dan tombol tema.','Selalu terlihat, info penting di satu tempat.'],
+  ['  <nav id="nav">','Menu samping/atas.','Berisi tombol dengan [[data-go="murojaah"]] dst.','JavaScript membaca [[data-go]] untuk berpindah halaman.'],
+  ['  <main id="main">','Isi utama berubah-ubah.','Berisi banyak [[<section id="p-…">]], satu untuk tiap halaman.','Hanya satu section yang tampil, sisanya [[hidden]].']]),
+ P_('Pola kuncinya: <b>satu file HTML, banyak "halaman" yang disembunyikan/ditampilkan</b>. Ini disebut <b>SPA</b> (Single Page Application). Tidak ada pemuatan ulang, jadi terasa seperti aplikasi.'),
+ Z_('Cara Kebun Murojaah menampilkan "halaman" yang berbeda adalah...',['Membuka file HTML lain','Menyembunyikan semua section lalu menampilkan satu dengan [[hidden]]','Memuat ulang browser','Memakai iframe'],1,'Itulah yang dilakukan [[renderPage()]], kita bedah di bab Router.')]},
+{id:'bd5',t:'JS dasar: js1.js (alat-alat kecil)',say:'File JavaScript pertama berisi alat dasar. Kecil-kecil tapi dipakai di mana-mana.',blocks:[
+ A_('js1.js (asli)','js',[
+  ['"use strict";','JavaScript lama membiarkan kesalahan kecil lolos diam-diam.','Mode ketat: salah tulis variabel jadi error, bukan lolos.','Bug ketahuan lebih cepat.'],
+  ['const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];','[[document.querySelector]] terlalu panjang diketik ratusan kali.','Singkatan: [[$("#app")]] = satu elemen. [[$$(".card")]] = semua, sebagai array.','Kode lebih pendek dan mudah dibaca (mirip jQuery).'],
+  ['const esc=s=>String(s).replace(/[&<>"\']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"})[c]);','Teks dari pengguna (misal nama) bisa berisi tag HTML jahat.','Mengganti karakter khusus agar dianggap teks biasa, bukan kode.','<b>Mencegah serangan XSS</b>. Dipakai setiap kali menampilkan data pengguna.'],
+  ['const pad=n=>String(n).padStart(2,"0");','Tanggal 5 harus jadi "05".','Menambah angka nol di depan sampai 2 digit.','Format 2026-11-05 yang rapi dan bisa diurutkan.'],
+  ['const dstr=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());','Perlu format tanggal tunggal yang konsisten.','Mengubah objek Date jadi teks "YYYY-MM-DD". [[getMonth()]] mulai dari 0, jadi +1.','Tanggal disimpan sebagai teks, mudah dibandingkan dan disimpan.'],
+  ['const today=()=>dstr(new Date());','"Hari ini" sering dibutuhkan.','Fungsi tanpa input yang mengembalikan tanggal hari ini.','Streak, jurnal, kuis, semua memakainya.'],
+  ['const addDays=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return dstr(d)};','Mau mundur sehari, tapi 1 Maret mundur jadi 28/29 Februari.','Menambah n hari (boleh negatif); objek Date yang mengurus pergantian bulan.','Inti perhitungan streak. Jangan hitung manual!'],
+  ['const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));','Angka harus tetap di dalam rentang.','Memaksa n berada di antara a dan b.','Misal target menit tidak boleh negatif.']]),
+ D_('dom'),
+ Z_('Kenapa [[esc()]] penting?',['Biar teks tebal','Mencegah teks pengguna dianggap kode HTML (XSS)','Mempercepat web','Mengubah bahasa'],1,'Tanpa [[esc]], nama seperti [[<img onerror=…>]] bisa menjalankan kode jahat.')]},
+{id:'bd6',t:'State, simpan data & streak',say:'S adalah "otak ingatan" web ini. Satu objek besar yang menyimpan semuanya.',blocks:[
+ P_('Semua data pengguna (sesi, koin, target, tema) hidup di satu objek bernama [[S]]. Setiap kali berubah, panggil [[save()]] supaya masuk ke [[localStorage]] dan (jika online) ke Firebase.'),
+ A_('streakInfo() asli, js1.js','js',[
+  ['function streakInfo(){','Banyak halaman perlu tahu streak.','Fungsi tunggal yang menghitung semua info streak.','Satu sumber kebenaran: tampilan di mana pun pasti sama.'],
+  ['  const m=dayMap(),t=today();','Perlu tahu hari mana saja yang ada sesinya.','[[dayMap()]] membuat objek {"2026-11-05":true,...}. [[t]] = hari ini.','Pengecekan "hari ini ada?" jadi instan: [[m[t]]].'],
+  ['  let cur=0,d=m[t]?t:addDays(t,-1);','Jika hari ini belum murojaah, streak kemarin belum putus.','[[cur]] = hitungan. Mulai dari hari ini kalau ada, kalau tidak mulai dari kemarin.','Adil: pengguna masih punya sisa hari ini untuk melanjutkan.'],
+  ['  while(m[d]){cur++;d=addDays(d,-1)}','Hitung berapa hari berturut-turut ke belakang.','Selama hari [[d]] ada di catatan: tambah 1 lalu mundur sehari.','Berhenti otomatis saat ketemu hari kosong.'],
+  ['  let best=0,run=0,prev=null;','Rekor terbaik juga mau ditampilkan.','Siapkan penghitung rekor.'],
+  ['  for(const x of Object.keys(m).sort()){run=(prev&&addDays(prev,1)===x)?run+1:1;best=Math.max(best,run);prev=x}','Cari deretan terpanjang di seluruh riwayat.','Urutkan hari, jika hari ini = hari sebelumnya + 1 maka deret lanjut, kalau tidak mulai dari 1.','Nilai [[best]] adalah deretan terpanjang.'],
+  ['  return {cur,best,doneToday:!!m[t],map:m};','Pemanggil butuh beberapa nilai sekaligus.','Mengembalikan objek berisi streak, rekor, status hari ini.','Dipakai kartu api 🔥 di beranda.'],
+  ['}']]),
+ D_('streak'),
+ D_('store'),
+ Z_('Jika hari ini belum murojaah tapi kemarin sudah, streak...',['Langsung 0','Masih terhitung (mulai dari kemarin)','Error','Reset ke 1'],1,'Itulah makna [[m[t]?t:addDays(t,-1)]]: streak belum putus sampai hari berganti.')]},
+{id:'bd7',t:'Router & event delegation',say:'Bagaimana tombol menu bisa berpindah halaman? Dua jurus: router dan delegasi event.',blocks:[
+ A_('js3.js (asli, dipotong)','js',[
+  ['const PAGES=["beranda","murojaah","tilawah","sunnah","games","juz","tajwid","tantangan","karakter","kalender","akun"];','Perlu daftar halaman sah.','Array nama halaman. Tiap nama punya section [[#p-nama]].','Mencegah pindah ke halaman yang tidak ada.'],
+  ['const P={beranda:pBeranda,murojaah:pMurojaah,juz:pJuz,…};','Setiap halaman perlu cara menggambar dirinya.','Peta: nama → fungsi yang mengembalikan HTML halaman itu.','Menambah halaman = tambah satu fungsi dan satu nama.'],
+  ['let cur="beranda";','Perlu ingat sedang di halaman mana.','Variabel halaman aktif.'],
+  ['function renderPage(){','Layar harus mengikuti nilai [[cur]].','Menggambar ulang halaman aktif.'],
+  ['  PAGES.forEach(n=>{$("#p-"+n).hidden=n!==cur});','Hanya satu halaman boleh terlihat.','Untuk tiap halaman: sembunyikan kecuali yang aktif.','Inilah yang membuat SPA terasa seperti pindah halaman.'],
+  ['  $("#p-"+cur).innerHTML=P[cur]();','Isi halaman dibuat dari data terbaru.','Panggil fungsi halaman, hasil HTML dimasukkan ke section.','Isi selalu segar sesuai state [[S]].'],
+  ['}'],
+  ['function go(n){if(!PAGES.includes(n))n="beranda";cur=n;history.replaceState(null,"","#"+n);renderPage()}','Tombol menu butuh satu pintu untuk pindah.','Validasi nama, ubah [[cur]], tulis #hash di alamat, gambar ulang.','Tombol Back/refresh tetap tahu posisi halaman.'],
+  ['document.addEventListener("click",e=>{','Ada ratusan tombol, dan banyak dibuat ulang oleh JavaScript.','Satu "telinga" untuk seluruh dokumen.','Tombol baru otomatis berfungsi. Tidak perlu daftar ulang.'],
+  ['  const go_=e.target.closest("[data-go]");if(go_){go(go_.dataset.go);return}','Klik bisa mengenai ikon di dalam tombol, bukan tombolnya.','[[closest]] naik ke atas sampai ketemu elemen ber-[[data-go]].','Pindah halaman sesuai [[data-go]].'],
+  ['  const a=e.target.closest("[data-act]");if(a&&ACT[a.dataset.act])ACT[a.dataset.act](a,e);','Aksi lain: hapus, simpan, mulai timer.','Mencari [[data-act]] dan menjalankan fungsi di peta [[ACT]].','Pola "satu pintu": tambah fitur = tambah satu entri ACT.'],
+  ['});']]),
+ D_('router'),
+ D_('deleg'),
+ Z_('Keuntungan event delegation (satu listener di document)?',['Kode lebih lambat','Tombol yang dibuat belakangan tetap berfungsi','Tidak butuh JavaScript','Memakai lebih banyak memori'],1,'Listener ada di induk, jadi elemen baru otomatis tercakup.')]},
+{id:'bd8',t:'Timer & koin',say:'Timer murojaah dan sistem koin. Ada trik kecil supaya timer tidak bohong.',blocks:[
+ A_('js2.js (tick) & js8.js (earn), asli','js',[
+  ['function tick(){','Timer harus memperbarui layar berkala.','Dipanggil berulang selama timer berjalan.'],
+  ['  if(!T.running) return;','Jika sudah dijeda, jangan lanjut.','Penjaga: keluar kalau tidak berjalan.','Mencegah timer "hantu".'],
+  ['  updateTimerFace();','Tampilkan waktu.','Menulis menit:detik ke layar.'],
+  ['  if(T.mode==="down"&&elapsed()>=T.mins*60000){…chime();saveSession(true);return}','Mode hitung mundur harus berhenti sendiri.','Jika waktu habis: bunyi lonceng dan simpan sesi.','Murojaah tercatat otomatis.'],
+  ['  T.raf=setTimeout(tick,250);','Mau diulang tiap 0,25 detik.','Menjadwalkan [[tick]] lagi.','Cukup halus tanpa membebani baterai.'],
+  ['function earn(n,why,capped,quiet){','Koin diberikan dari banyak fitur.','Satu fungsi pusat penambah koin.','Aturan koin ada di satu tempat.'],
+  ['  if(capped){ … n=Math.min(n,Math.max(0,INSTANT_CAP-S.ei.n));S.ei.n+=n }','Mencegah farming koin dengan klik berulang.','Batasi koin per hari. Hari baru → hitungan reset.','Ekonomi koin adil.'],
+  ['  S.coins=(S.coins||0)+n;','Tambahkan.','[[(S.coins||0)]] = anggap 0 kalau belum ada.','Aman untuk pengguna lama.'],
+  ['  save();if(!quiet)sfx("coin");coinFly(n);return n;','Data harus tersimpan, pengguna perlu umpan balik.','Simpan, bunyi, animasi koin terbang, kembalikan jumlah sebenarnya.','Terasa memuaskan seperti game.']]),
+ D_('timer'),
+ D_('earn'),
+ Z_('Kenapa waktu dihitung dari [[Date.now()]] bukan menambah 1 tiap tick?',['Biar lucu','Karena tab di background bisa menunda tick, sedangkan jam sistem tetap akurat','Karena Date lebih mudah','Tidak ada bedanya'],1,'Browser menahan timer saat tab tidak aktif. Selisih jam sistem tetap benar.')]},
+{id:'bd9',t:'Login & kata sandi (hash)',say:'Kata sandimu tidak pernah disimpan apa adanya. Hanya "sidik jari"-nya. Ini bagian penting keamanan.',blocks:[
+ A_('js5.js hashPw (asli, dipotong)','js',[
+  ['async function hashPw(salt,pw){','Hasil perhitungan butuh waktu, jadi fungsi ini asinkron.','Menerima salt dan sandi, mengembalikan hash.','Disimpan hash-nya saja, bukan sandi.'],
+  ['  if(window.crypto&&crypto.subtle){','Fitur kripto hanya ada di sambungan aman (https).','Cek apakah browser menyediakannya.','Kalau tidak ada, pakai cadangan.'],
+  ['    const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveBits"]);','Sandi harus diubah ke byte dan dibungkus sebagai "kunci".','Mengimpor sandi untuk dipakai algoritma PBKDF2.','Langkah wajib API crypto.'],
+  ['    const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:…,iterations:150000,hash:"SHA-256"},key,256);','Hash cepat itu berbahaya: penebak bisa mencoba miliaran sandi per detik.','Mengacak sandi + salt 150.000 kali dengan SHA-256.','Sengaja lambat (~0,1 detik). Penebak jadi sangat lambat. [[salt]] membuat sandi sama menghasilkan hash beda per pengguna.'],
+  ['    return "p1:"+hex(bits);','Perlu bentuk teks untuk disimpan.','Ubah byte ke heksadesimal, beri awalan versi "p1:".','Awalan versi memudahkan upgrade algoritma nanti.'],
+  ['  // cadangan bila crypto tidak tersedia','Web bisa dibuka lewat file lokal tanpa https.','Hash sederhana sebagai jaring pengaman (lebih lemah).','Aplikasi tetap jalan di mana saja.']]),
+ D_('hash'),
+ N_('warn','Batas keamanan','Login lokal hanya melindungi dari orang iseng di perangkat yang sama. Di mode Firebase, kata sandi diurus Google, jauh lebih kuat.'.split('|')),
+ Z_('Kenapa sandi tidak disimpan apa adanya?',['Biar hemat tempat','Kalau data bocor, sandi asli tidak ikut bocor','Karena JavaScript tidak bisa','Biar lebih cepat'],1,'Hash adalah jalan satu arah: dari hash, sandi asli tidak bisa dikembalikan.')]},
+{id:'bd10',t:'Suara dengan WebAudio',say:'Semua bunyi di Kebun Murojaah dibuat dari rumus, tanpa satu file mp3 pun. Keren kan?',blocks:[
+ A_('js6.js (asli, dipotong)','js',[
+  ['const mtof=m=>440*Math.pow(2,(m-69)/12);','Not musik punya nomor (MIDI), speaker butuh frekuensi Hz.','Rumus: nada 69 = A4 = 440 Hz. Naik 12 nomor = frekuensi 2x (satu oktaf).','Cukup tulis nomor nada, kode mengubahnya ke frekuensi.'],
+  ['function note(m,t,dur,o){','Suara butuh nada, waktu mulai, durasi.','Memainkan satu nada.'],
+  ['  const c=SND.ctx,f=mtof(m),…','Semua suara lewat satu [[AudioContext]].','Ambil konteks audio dan frekuensi.','Satu mixer untuk semua suara.'],
+  ['  const env=c.createGain();env.gain.setValueAtTime(0.0001,t);','Nada yang mulai dan berhenti mendadak berbunyi "klik".','[[Gain]] = pengatur volume. Awali nyaris sunyi.','Cegah bunyi kasar.'],
+  ['  env.gain.exponentialRampToValueAtTime(g,t+(o.a||0.006));','Naik halus ke volume penuh.','Menaikkan volume dalam 6 milidetik.','Bunyi "attack" yang bersih.'],
+  ['  env.gain.exponentialRampToValueAtTime(0.0001,t+dur);','Nada harus memudar seperti denting asli.','Turun halus sampai hampir hening.','Terdengar natural seperti lonceng.'],
+  ['  const parts=o.soft?[[1,1]]:[[1,1],[2,0.28],[4.05,0.06]];','Satu gelombang sinus terdengar datar.','Tambah "harmoni" di 2x dan ~4x frekuensi dengan volume kecil.','Warna suara jadi seperti lonceng kecil.'],
+  ['  parts.forEach(p=>{const os=c.createOscillator(),…os.start(t);os.stop(t+dur+0.05)});','Tiap lapisan perlu pembangkit gelombang.','[[Oscillator]] membuat gelombang pada frekuensi tertentu, lalu dihentikan setelah selesai.','Tidak membocorkan memori.']]),
+ D_('note'),
+ P_('Catatan: browser baru mengizinkan suara <b>setelah pengguna menyentuh layar</b>. Itu sebabnya audio dibuat saat pertama ada tap.'),
+ Z_('Kenapa volume dinaikkan dan diturunkan perlahan?',['Biar boros baterai','Menghindari bunyi "klik" dan membuat denting terasa natural','Aturan browser','Biar keras'],1,'Perubahan volume mendadak menghasilkan letupan; ramp membuatnya halus.')]},
+{id:'bd11',t:'Tema (skin) & mode gelap',say:'19 tema, tapi kodenya sangat pendek. Itulah kekuatan variabel CSS.',blocks:[
+ A_('js19.js skinApply (asli)','js',[
+  ['function skinApply(id){','Tema bisa diganti kapan saja.','Menerapkan tema bernama [[id]].'],
+  ['  const r=document.documentElement;','Elemen [[<html>]] adalah akar semua CSS.','Simpan referensinya.'],
+  ['  if(id&&id!=="klasik"&&skinOK(id))r.setAttribute("data-skin",id);','Tema asli tidak perlu atribut.','Pasang [[data-skin="sakura"]] bila valid.','CSS [[[data-skin="sakura"]{…}]] aktif, variabelnya ditimpa.'],
+  ['  else r.removeAttribute("data-skin");','Kembali ke tema dasar.','Hapus atribut.','Variabel kembali ke nilai awal [[:root]].'],
+  ['}'],
+  ['try{const k=localStorage.getItem(SKIN_KEY);if(k&&skinOK(k))skinApply(k)}catch(e){}','Layar login juga harus bertema, padahal data akun belum dimuat.','Baca tema terakhir langsung dari localStorage saat web dibuka.','Tidak ada kilatan warna salah saat memuat.']]),
+ D_('skin'),
+ Z_('Apa yang berubah ketika [[data-skin="hutan"]] dipasang pada [[<html>]]?',['HTML diganti total','Variabel CSS ditimpa dengan nilai tema hutan','Halaman dimuat ulang','Font diunduh ulang'],1,'Selector [[[data-skin=hutan]]] menimpa nilai variabel, semua komponen ikut.')]},
+{id:'bd12',t:'Cari ayat, admin & Firebase',say:'Bab terakhir! Tiga fitur besar, dan semuanya memakai pola yang sudah kamu pelajari.',blocks:[
+ H_('Cari ayat: menyamakan teks Arab'),
+ A_('js20.js (asli)','js',[
+  ['const arNorm=s=>String(s).replace(ARSTRIP,"")…','Ayat Arab punya harakat; orang mencari tanpa harakat.','Buang harakat, samakan bentuk alif (آأإٱ → ا), ya, ta marbutah.','Pencarian "بسم" tetap menemukan "بِسْمِ".'],
+  ['let AR_N=null;','Menormalisasi 6.236 ayat itu berat.','Cache: dibuat sekali saat pertama dipakai.','Pencarian berikutnya instan.'],
+  ['function arIndex(){if(AR_N)return AR_N; …}','Hindari kerja berulang.','Jika sudah ada, kembalikan; kalau belum, buat lalu simpan.','Pola umum yang disebut <b>lazy cache</b>.']]),
+ D_('norm'),
+ H_('Admin: siapa yang boleh?'),
+ A_('js21.js (asli)','js',[
+  ['const isAdmin=()=>!!curUser&&curUser!==GUEST&&admList().includes(curUser);','Panel admin tidak boleh terlihat oleh semua orang.','Benar hanya jika ada yang login, bukan tamu, dan namanya ada di daftar admin.','Menyembunyikan tombol admin dari pengguna biasa.']]),
+ N_('warn','Jujur soal keamanan','[[isAdmin()]] hanya mengatur <b>tampilan</b>. Orang yang paham DevTools bisa mengubahnya. Perlindungan sesungguhnya ada di <b>Firestore Rules</b> yang berjalan di server Google. Prinsip: jangan percaya apa pun dari sisi pengguna.'.split('|')),
+ H_('Firebase: sinkron antar perangkat'),
+ U_('Saat login online, data [[users/{uid}]] diambil dari Firestore','Setiap [[save()]] menandai data "kotor" lalu mengirim setelah jeda singkat (debounce) supaya hemat kuota','Jika offline, tetap tersimpan lokal dan dikirim saat online'),
+ Z_('Kenapa tombol admin disembunyikan tidak cukup untuk keamanan?',['Karena warnanya jelek','Karena kode di browser bisa diubah pengguna; perlindungan harus di server (Rules)','Karena Firebase mahal','Karena HP kecil'],1,'Segala kode di sisi klien bisa dimodifikasi. Server yang menentukan akses.'),
+ N_('tip','Selamat! 🎉','Kamu sudah menelusuri hampir semua bagian Kebun Murojaah. Sekarang coba ubah satu hal kecil di kode aslimu, misalnya warna di [[:root]], lalu upload ulang [[index.html]]. Itu langkah pertama jadi developer!'.split('|'))]}
+]};
+
+init();
+</script>
