@@ -1,0 +1,14 @@
+BELAJAR NGODING BARENG PITA
+===========================
+Isi zip: index.html (seluruh web, satu file, tanpa instalasi).
+
+Cara pakai di HP/laptop: buka index.html di browser. Selesai.
+
+Cara taruh di GitHub Pages (seperti Kebun Murojaah):
+1. Buka repo kamu > Add file > Upload files, tarik index.html.
+2. Kalau nanti ada update, upload lagi index.html dengan nama yang SAMA,
+   pilih timpa (overwrite). Alamat webnya tidak berubah.
+
+Catatan:
+- Progres, XP, catatan tersimpan di browser (localStorage), per perangkat.
+- Lab bisa menjalankan HTML, CSS, JS. Bahasa lain (Python dll) hanya materi.
